@@ -1,0 +1,4 @@
+VERSION = '@VERSION@'
+pkgdatadir = '@pkgdatadir@'
+localedir = '@localedir@'
+

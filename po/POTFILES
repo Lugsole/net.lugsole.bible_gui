@@ -1,0 +1,7 @@
+data/net.lugsole.bible_gui.desktop.in
+data/net.lugsole.bible_gui.appdata.xml.in
+data/net.lugsole.bible_gui.gschema.xml
+src/window.ui
+src/main.py
+src/window.py
+

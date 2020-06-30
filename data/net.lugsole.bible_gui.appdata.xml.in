@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+	<id>net.lugsole.bible_gui.desktop</id>
+	<metadata_license>FSFAP</metadata_license>
+	<project_license>MIT</project_license>
+  <content_rating type="oars-1.0" />
+	<name>Bible</name>
+	<summary>Bible app that supports multiple translations and languages</summary>
+  <release>@version@</release>
+    <screenshots>
+    <screenshot type="default">
+      <caption>Bible app on the Chapter selection sccreen</caption>
+      <image>http://flatpak.lugsole.net/bible_chapter.png</image>
+    </screenshot>
+  </screenshots>
+  <description>
+    <p>
+      This is a basic bible app that supports many different translations
+    </p>
+    <p>
+      This app supports multple different bible file formats.
+    </p>
+    <ul>
+      <li>spb</li>
+      <li>SQLite3</li>
+      <li>tsv</li>
+    </ul>
+  </description>
+  <url type="homepage">https://lugsole.net</url>
+	<developer_name>Lugsole</developer_name>
+  <releases>
+    <release version="@version@" date="@version_date@"/>
+  </releases>
+</component>

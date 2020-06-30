@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Bible
+Icon=net.lugsole.bible_gui
+Exec=bible
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/bible;
+Categories=GTK;
+StartupNotify=true

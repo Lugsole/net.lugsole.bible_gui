@@ -37,7 +37,6 @@ class BibleParserSqLit3(BibleParserBase):
         conn = sqlite3.connect(self.file_name)
         c = conn.cursor()
         for row in c.execute('SELECT book_number, chapter, verse, text FROM verses'):
-            # print(row, int(row[0]))
             verseText = row[3].rstrip()
             verseText = re.sub(
                r"\<(?<=\<)(.*?)(?=\>)\>",

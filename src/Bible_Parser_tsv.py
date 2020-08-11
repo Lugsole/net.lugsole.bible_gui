@@ -24,7 +24,6 @@ class BibleParserTSV(BibleParserBase):
 
     def prosessVerseData(self, lines, index):
         data = lines[index].replace("\n", "").split('\t')
-        # print(data[5])
         if len(self.bible.getBooksChapterNames(data[0])) == 0:
             self.bible.append(Book(data[0], int(data[2]), data[1]))
         self.bible.addVerse(

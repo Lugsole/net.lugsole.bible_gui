@@ -29,6 +29,14 @@
   <url type="homepage">https://lugsole.net</url>
 	<developer_name>Lugsole</developer_name>
   <releases>
-    <release version="@version@" date="@version_date@"/>
+    <release version="0.1.1" date="2020-08-10">
+      <description>
+        <ul>
+          <li>Play/pause now works.</li>
+          <li>Uses libhandy 1 now</li>
+        </ul>>
+      </description>
+    </release>
+    <release version="0.1.0" date="2020-05-09"/>
   </releases>
 </component>

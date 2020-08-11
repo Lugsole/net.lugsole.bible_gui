@@ -8,10 +8,6 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--filesystem=xdg-run/dconf",
-        "--filesystem=~/.config/dconf:ro",
-        "--talk-name=ca.desrt.dconf",
-        "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
         "--socket=pulseaudio"
     ],
     "cleanup": [
@@ -36,28 +32,20 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://source.puri.sm/Librem5/libhandy.git",
-                    "commit":"7a193d7692c9c76a1a94f17c4d30b585f77d177c"
+                    "url": "https://gitlab.gnome.org/GNOME/libhandy.git",
+                    "commit":"3a61bd9c6bc95f5418ef5376a99632d103162d49"
                 }
             ]
         },
         {
             "name": "espeak",
+	    "no-parallel-make": true,
             "sources": [
                 {
                     "type": "git",
                     "url": "https://github.com/espeak-ng/espeak-ng",
                     "commit": "b702b03996de94035fadae0eb5ad9506c5a09f35"
                 }
-            ],
-            "buildsystem": "simple",
-            "build-commands": [
-            	"printenv",
-            	"pwd",
-            	"./autogen.sh",
-            	"./configure --bindir=/app/bin --libdir=/app/lib --prefix=/app/",
-                "make all",
-                "make install"
             ]
         },
         {

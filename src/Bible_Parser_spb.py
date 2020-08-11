@@ -50,19 +50,15 @@ class BibleParserSPB(BibleParserBase):
             ):
                 line = lines[index+offset]
                 parts = line.split('\t')
-                # print(parts[1])
                 self.bible.append(Book(parts[1], int(parts[0])))
                 offset += 1
             return offset
 
         else:
-            # print(line)
-            # print("Hit bad spot")
             return 1
 
     def prosessVerseData(self, lines, index):
         data = lines[index].split('\t')
-        # print(data)
         self.bible.addVerse(
             Verse(int(data[1]), int(data[2]), int(data[3]), data[4].rstrip()))
         return 1

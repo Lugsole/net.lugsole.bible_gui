@@ -3,16 +3,16 @@
 import gi
 
 from .tts import readText
-from .settings import Settings
+from .settings import BibleSettings
 from .Bible_Parser import BibleParser
 gi.require_version('Gtk', '3.0')
-from gi.repository import GObject, GLib, Gtk, Gio
-gi.require_version('Handy', '0.0')
+gi.require_version('Gst', '1.0')
+from gi.repository import GObject, GLib, Gtk, Gio, Gst
+gi.require_version('Handy', '1')
 from gi.repository import Handy
 from .config import pkgdatadir
 import os
 
-Handy.init()
 
 
 @Gtk.Template(resource_path='/net/lugsole/bible_gui/window.ui')
@@ -29,6 +29,7 @@ class BibleWindow(Gtk.ApplicationWindow):
     scrolled_window = Gtk.Template.Child()
     back_button = Gtk.Template.Child()
     play_button = Gtk.Template.Child()
+    play_image = Gtk.Template.Child()
     book_list = Gtk.Template.Child()
 
     def __init__(self, App, **kwargs):
@@ -36,28 +37,23 @@ class BibleWindow(Gtk.ApplicationWindow):
         self.App = App
 
         try:
+            # try to connect to settings
             self.settings = Gio.Settings.new(self.BASE_KEY)
-            # print(self.settings)
             base_file = self.settings.get_string("bible-translation")
-            # print("Gio.Settings recived bible translation")
             self.settings.connect(
                 "changed::bible-translation",
                 self.on_bible_translation_changed)
-            # print("Gio.Settings Connected")
-            # print(base_file)
             if base_file != "":
                 self.p = BibleParser(
                     os.path.join(GLib.get_user_data_dir(), base_file))
             else:
                 self.p = BibleParser(os.path.join(pkgdatadir, "kjv.tsv"))
         except Exception:
-            # print("Gio.Settings Error")
             try_file = os.path.join(GLib.get_user_data_dir(), "main.SQLite3")
             if os.path.isfile(try_file):
                 self.p = BibleParser(try_file)
             else:
                 self.p = BibleParser(os.path.join(pkgdatadir, "kjv.tsv"))
-
         self.p.loadAll()
         self.Bible = self.p.bible
 
@@ -65,43 +61,20 @@ class BibleWindow(Gtk.ApplicationWindow):
             'key-press-event', self.search_call
         )
 
-        # print(self.back_button)
         self.back_button.connect('clicked', self.show_page_back, self.sidebar)
         self.play_button.connect('clicked', self.readChapter)
         action_print = Gio.SimpleAction.new("preferences", None)
-        action_print.connect("activate", self.print_something)
+        action_print.connect("activate", self.launch_settings)
         App.add_action(action_print)
         self.book = ""
         self.chapter = ""
-        # print(self.book_list)
 
         self.UpdateBooks()
-
-        # Ensure that the header is updated when the page changes.
-        self.content_box.bind_property(
-            'visible-child-name',
-            self.header_box, 'visible-child-name',
-            GObject.BindingFlags.SYNC_CREATE
-        )
-        # Hide buttons when the leaflets are folded.
-        self.header_box.bind_property(
-            'folded',
-            self.back_button, 'visible',
-            GObject.BindingFlags.SYNC_CREATE
-        )
-        # End of property bindings
         first_book = self.Bible.getBookNames()[0]
         first_chapter = self.Bible.getBooksChapterNames(first_book)[0]
         verses = self.Bible.getVerses(first_book, first_chapter)
         self.UpdateTable(verses)
 
-        # self.show()
-        # print(GLib.get_user_data_dir())
-        # print(GLib.get_user_config_dir())
-
-        # print(GLib.get_user_cache_dir())
-        # print(GLib.get_user_name())
-        # print(GLib.get_user_runtime_dir())
         self.player = None
 
     def add_book(self, name, chapters):
@@ -111,7 +84,6 @@ class BibleWindow(Gtk.ApplicationWindow):
         flowbox.set_selection_mode(Gtk.SelectionMode.NONE)
         flowbox.show()
         for chapter in chapters:
-
             button = Gtk.Button(name, label=chapter)
             button.show()
             button.connect(
@@ -131,7 +103,6 @@ class BibleWindow(Gtk.ApplicationWindow):
     def UpdateBooks(self):
         for item in self.book_list.get_children():
             self.book_list.remove(item)
-        # print(self.Bible)
         books = self.Bible.getBookNames()
         for book in books:
             chapters = self.Bible.getBooksChapterNames(book)
@@ -189,7 +160,10 @@ class BibleWindow(Gtk.ApplicationWindow):
     def show_page(self, button, page, book, chapter):
         self.book = book
         self.chapter = chapter
-        # print("Updating Table")
+        if self.player is not None:
+            self.player.end()
+            self.update_play_icon()
+        self.player = None
         verses = self.Bible.getVerses(book, chapter)
         self.UpdateTable(verses)
         self.content_box.set_visible_child(page)
@@ -197,20 +171,34 @@ class BibleWindow(Gtk.ApplicationWindow):
     def readChapter(self, button):
         verses = self.Bible.getVerses(self.book, self.chapter)
         read = ""
-        if self.player is not None:
-            self.player.end()
-        for verse in verses:
-            read += verse.text + " "
-        self.player = readText(read, self.Bible.language)
-        self.player.Play()
+        if self.player is not None and self.player.getstate() == Gst.State.PLAYING:
+            self.player.Pause()
+        elif self.player is not None and self.player.getstate() == Gst.State.PAUSED:
+            self.player.Play()
+        else:
+            for verse in verses:
+                read += verse.text + " "
+            self.player = readText(read, self.Bible.language)
+            self.player.add_callback(self.done_playing)
+            self.player.Play()
+        self.update_play_icon()
 
-    def print_something(self, e1, e2):
-        Settings(self.App, self.BASE_KEY)
+    def done_playing(self):
+        self.player.end()
+        self.player = None
+        self.update_play_icon()
+
+    def update_play_icon(self):
+        action= "start"
+        if self.player is not None and self.player.getstate() == Gst.State.PLAYING:
+            action= "pause"
+        self.play_image.set_property("icon_name", "media-playback-"+action+"-symbolic")
+
+    def launch_settings(self, e1, e2):
+        BibleSettings(self.App, self.BASE_KEY)
 
     def on_bible_translation_changed(self, settings, key):
-        print("Changing active translation")
         base_file = settings.get_string("bible-translation")
-        print(base_file)
         self.p = BibleParser(os.path.join(GLib.get_user_data_dir(), base_file))
         self.p.loadAll()
         self.Bible = self.p.bible

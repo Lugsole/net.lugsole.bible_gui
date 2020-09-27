@@ -6,8 +6,8 @@
   <content_rating type="oars-1.0" />
 	<name>Bible</name>
 	<summary>Bible app that supports multiple translations and languages</summary>
-  <release>@version@</release>
-    <screenshots>
+  <release>0.1.2</release>
+  <screenshots>
     <screenshot type="default">
       <caption>Bible app on the Chapter selection sccreen</caption>
       <image>http://flatpak.lugsole.net/bible_chapter.png</image>
@@ -21,22 +21,24 @@
       This app supports multple different bible file formats.
     </p>
     <ul>
-      <li>spb</li>
-      <li>SQLite3</li>
+      <li>SoftProjector - spb</li>
+      <li>MyBible - SQLite3</li>
       <li>tsv</li>
+      <li>Zefania XML bible - xml</li>
     </ul>
   </description>
   <url type="homepage">https://lugsole.net</url>
 	<developer_name>Lugsole</developer_name>
   <releases>
-    <release version="0.1.1" date="2020-08-10">
+    <release version="0.1.2" date="2020-09-26">
       <description>
         <ul>
-          <li>Play/pause now works.</li>
-          <li>Uses libhandy 1 now</li>
-        </ul>>
+          <li>Added supports Zefania XML based bible files.</li>
+          <li>New Bible translation file importer.</li>
+        </ul>
       </description>
     </release>
+    <release version="0.1.1" date="2020-08-10"/>
     <release version="0.1.0" date="2020-05-09"/>
   </releases>
 </component>

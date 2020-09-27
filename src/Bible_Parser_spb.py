@@ -3,6 +3,11 @@ from .Bible_Parser_Base import BibleParserBase
 
 
 class BibleParserSPB(BibleParserBase):
+    name = "spb"
+    fileEndings = ["spb"]
+    book = 0
+    chapter = 0
+    verse = 0
     def __init__(self, file_name):
         BibleParserBase.__init__(self, file_name)
 
@@ -15,7 +20,6 @@ class BibleParserSPB(BibleParserBase):
                 lines.append(line)
             i = 0
             while i < len(lines) and not lines[i].startswith("--"):
-
                 i += self.prosessData(lines, i)
 
     def loadAll(self):
@@ -59,6 +63,20 @@ class BibleParserSPB(BibleParserBase):
 
     def prosessVerseData(self, lines, index):
         data = lines[index].split('\t')
-        self.bible.addVerse(
-            Verse(int(data[1]), int(data[2]), int(data[3]), data[4].rstrip()))
+        if len(data) == 5:
+            self.bible.addVerse(
+                Verse(int(data[1]),
+                int(data[2]),
+                int(data[3]),
+                data[4].rstrip()))
+            if not(
+            (self.verse +1 == int(data[3]) and self.chapter  == int(data[2]) and self.book  == int(data[1])) or
+            (1 == int(data[3]) and self.chapter+1  == int(data[2]) and self.book  == int(data[1])) or
+            (1 == int(data[3]) and (1  == int(data[2]) or 0  == int(data[2])) and self.book + 1  == int(data[1])) ):
+                print("Unusual transition:", self.book,self.chapter, self.verse)
+            self.book = int(data[1])
+            self.chapter = int(data[2])
+            self.verse = int(data[3])
+        else:
+            print("Bad line", data)
         return 1

@@ -12,6 +12,7 @@ python = import('python')
 
 conf = configuration_data()
 conf.set('PYTHON', python.find_installation('python3').path())
+conf.set('ESPEAK', find_program('espeak').path())
 conf.set('VERSION', meson.project_version())
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
@@ -41,10 +42,16 @@ bible_sources = [
   'Bible_Parser_Base.py',
   'Bible_Parser_sqlite.py',
   'Bible_Parser_spb.py',
+  'Bible_Parser_xml.py',
   'Bible.py',
   'Audio_Player.py',
   'Bible_Parser_tsv.py',
   'settings.py'
 ]
+
+libhandy_dep = dependency('libhandy-1',
+  version: '>=0.84.0'
+  )
+
 
 install_data(bible_sources, install_dir: moduledir)

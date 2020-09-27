@@ -248,6 +248,14 @@
             <property name="visible">True</property>
           </object>
         </child>
+        <child>
+          <object class="GtkModelButton">
+            <property name="action-name">app.about</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">About</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
       </object>
     </child>
   </object>

@@ -10,8 +10,9 @@ gi.require_version('Gst', '1.0')
 from gi.repository import GObject, GLib, Gtk, Gio, Gst
 gi.require_version('Handy', '1')
 from gi.repository import Handy
-from .config import pkgdatadir
+from .config import pkgdatadir, VERSION
 import os
+import time
 
 
 
@@ -43,18 +44,16 @@ class BibleWindow(Gtk.ApplicationWindow):
             self.settings.connect(
                 "changed::bible-translation",
                 self.on_bible_translation_changed)
-            if base_file != "":
-                self.p = BibleParser(
-                    os.path.join(GLib.get_user_data_dir(), base_file))
+            full_path = os.path.join(GLib.get_user_data_dir(), base_file)
+            if base_file != "" and os.path.isfile(full_path):
+                self.p = BibleParser(full_path)
             else:
                 self.p = BibleParser(os.path.join(pkgdatadir, "kjv.tsv"))
-        except Exception:
-            try_file = os.path.join(GLib.get_user_data_dir(), "main.SQLite3")
-            if os.path.isfile(try_file):
-                self.p = BibleParser(try_file)
-            else:
-                self.p = BibleParser(os.path.join(pkgdatadir, "kjv.tsv"))
-        self.p.loadAll()
+            self.p.loadAll()
+        except:
+            print("Falling back to KJV")
+            self.p = BibleParser(os.path.join(pkgdatadir, "kjv.tsv"))
+            self.p.loadAll()
         self.Bible = self.p.bible
 
         self.search.connect(
@@ -65,6 +64,9 @@ class BibleWindow(Gtk.ApplicationWindow):
         self.play_button.connect('clicked', self.readChapter)
         action_print = Gio.SimpleAction.new("preferences", None)
         action_print.connect("activate", self.launch_settings)
+        App.add_action(action_print)
+        action_print = Gio.SimpleAction.new("about", None)
+        action_print.connect("activate", self.show_about)
         App.add_action(action_print)
         self.book = ""
         self.chapter = ""
@@ -204,3 +206,14 @@ class BibleWindow(Gtk.ApplicationWindow):
         self.Bible = self.p.bible
 
         self.UpdateBooks()
+
+    def show_about(self,e1, e2):
+        dialog = Gtk.AboutDialog()
+        dialog.set_copyright("© 2020 Lugsole")
+        dialog.set_program_name("Bible")
+        dialog.set_comments("A Linux Bible app")
+        dialog.set_version(VERSION)
+        dialog.set_license_type(Gtk.License.MIT_X11)
+        dialog.set_authors(["Lugsole"])
+        dialog.set_logo_icon_name("net.lugsole.bible_gui")
+        dialog.show()

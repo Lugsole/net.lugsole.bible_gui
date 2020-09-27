@@ -5,8 +5,13 @@ from .Bible_Parser_Base import BibleParserBase
 
 
 class BibleParserSqLit3(BibleParserBase):
+    name = "SQLite/My Bible"
+    fileEndings = ["SQLite3","sqlite"]
     def __init__(self, file_name):
         BibleParserBase.__init__(self, file_name)
+
+    def isValidFileEnding(self, filename):
+        return '.sqlite3' in filename.lower() and not '.commentaries.sqlite3' in filename.lower() and not '.dictionary.sqlite3' in filename.lower()and not '.crossreferences.sqlite3' in filename.lower()
 
     def loadInfo(self):
         conn = sqlite3.connect(self.file_name)

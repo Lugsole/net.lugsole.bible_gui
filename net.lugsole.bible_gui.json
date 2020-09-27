@@ -1,7 +1,7 @@
 {
     "app-id" : "net.lugsole.bible_gui",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "3.36",
+    "runtime-version" : "3.38",
     "sdk" : "org.gnome.Sdk",
     "command" : "bible",
     "finish-args" : [
@@ -33,7 +33,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/GNOME/libhandy.git",
-                    "commit":"3a61bd9c6bc95f5418ef5376a99632d103162d49"
+                    "commit":"94313c206258860b2428712e7ece1d02c5177857"
                 }
             ]
         },
@@ -44,7 +44,7 @@
                 {
                     "type": "git",
                     "url": "https://github.com/espeak-ng/espeak-ng",
-                    "commit": "b702b03996de94035fadae0eb5ad9506c5a09f35"
+                    "commit": "ec7ebfb3c6767edc7575113562eac72e6d348732"
                 }
             ]
         },
@@ -55,7 +55,8 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://github.com/Lugsole/net.lugsole.bible_gui"
+                    "url": "https://github.com/Lugsole/net.lugsole.bible_gui",
+                    "commit": "f174572fb84bdbd68e9d39d360087538de9a0939"
                 }
             ]
         }

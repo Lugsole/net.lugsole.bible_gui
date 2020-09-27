@@ -1,4 +1,4 @@
 VERSION = '@VERSION@'
 pkgdatadir = '@pkgdatadir@'
 localedir = '@localedir@'
-
+espeak_path = '@ESPEAK@'

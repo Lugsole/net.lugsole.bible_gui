@@ -3,6 +3,8 @@ from .Bible_Parser_Base import BibleParserBase
 
 
 class BibleParserTSV(BibleParserBase):
+    name = "TSV"
+    fileEndings = ["tsv"]
     def __init__(self, file_name):
         BibleParserBase.__init__(self, file_name)
 

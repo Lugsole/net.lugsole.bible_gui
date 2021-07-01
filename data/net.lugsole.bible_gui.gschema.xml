@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="bible_gui">
-  <schema id="net.lugsole.bible_gui" path="/net/lugsole/bible_gui/">
+  <schema id="@APPLICATION_ID@" path="@application_path@/">
     <key name="bible-translation" type="s">
       <default>""</default>
       <summary>Bible file location</summary>

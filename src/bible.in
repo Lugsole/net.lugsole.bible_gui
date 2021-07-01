@@ -5,19 +5,37 @@ import os
 import sys
 import signal
 import gettext
+import locale
 
 VERSION = '@VERSION@'
 pkgdatadir = '@pkgdatadir@'
-localedir = '@localedir@'
+LOCALE_DIR = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-gettext.install('bible', localedir)
+gettext.install('@APPLICATION_ID@', LOCALE_DIR)
 
+def set_internationalization():
+    """Sets application internationalization."""
+    try:
+        locale.bindtextdomain('@APPLICATION_ID@', LOCALE_DIR)
+        locale.textdomain('@APPLICATION_ID@')
+    except AttributeError as e:
+        # Python built without gettext support does not have
+        # bindtextdomain() and textdomain().
+        print(
+            "Could not bind the gettext translation domain. Some"
+            " translations will not work. Error:\n{}".format(e))
+
+    gettext.bindtextdomain('@APPLICATION_ID@', LOCALE_DIR)
+    gettext.textdomain('@APPLICATION_ID@')
+
+    
 if __name__ == '__main__':
     import gi
 
     from gi.repository import Gio
+    set_internationalization()
     resource = Gio.Resource.load(os.path.join(pkgdatadir, 'bible.gresource'))
     resource._register()
     from bible import main

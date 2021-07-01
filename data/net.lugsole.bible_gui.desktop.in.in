@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Bible@application_name_suffix@
+Icon=@APPLICATION_ID@
+Exec=bible@file_name_suffix@ %U
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/bible;
+Categories=GTK;
+StartupNotify=true
+X-Purism-FormFactor=Workstation;Mobile;

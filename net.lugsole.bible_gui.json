@@ -1,16 +1,19 @@
 {
     "app-id" : "net.lugsole.bible_gui",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "3.38",
+    "runtime-version" : "41",
     "sdk" : "org.gnome.Sdk",
     "command" : "bible",
     "finish-args" : [
+        "--device=dri",
         "--share=ipc",
+        "--share=network",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--socket=pulseaudio"
+        "--socket=pulseaudio",
+        "--own-name=org.mpris.MediaPlayer2.Bible"
     ],
-    "cleanup": [
+    "cleanup" : [
         "/include",
         "/lib/pkgconfig",
         "/man",
@@ -21,44 +24,73 @@
         "*.la",
         "*.a"
     ],
-    "modules": [
+    "modules" : [
         {
-            "name": "libhandy",
-            "buildsystem": "meson",
-            "builddir": true,
-            "config-opts": [
-                "-Dglade_catalog=disabled"
+            "name" : "espeak",
+            "no-parallel-make" : true,
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/espeak-ng/espeak-ng",
+                    "commit" : "ec7ebfb3c6767edc7575113562eac72e6d348732"
+                }
+            ]
+        },
+        {
+            "name" : "libadwaita",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dexamples=false",
+                "-Dtests=false"
             ],
-            "sources": [
+            "sources" : [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/libhandy.git",
-                    "commit":"94313c206258860b2428712e7ece1d02c5177857"
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libadwaita.git",
+                    "commit" : "6b447fde8f270001a0dc29ef59d3e9bf6d32dae9"
+                }
+            ],
+            "modules" : [
+                {
+                    "name" : "libsass",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "url" : "https://github.com/lazka/libsass.git",
+                            "branch" : "meson",
+                            "commit": "302397c0c8ae2d7ab02f45ea461c2c3d768f248e"
+                        }
+                    ]
+                },
+                {
+                    "name" : "sassc",
+                    "buildsystem" : "meson",
+                    "sources" : [
+                        {
+                            "type" : "git",
+                            "url" : "https://github.com/lazka/sassc.git",
+                            "branch" : "meson",
+                            "commit": "82803377c33247265d779af034eceb5949e78354"
+
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "espeak",
-	    "no-parallel-make": true,
-            "sources": [
+            "name" : "bible",
+            "builddir" : true,
+            "buildsystem" : "meson",
+            "sources" : [
                 {
-                    "type": "git",
-                    "url": "https://github.com/espeak-ng/espeak-ng",
-                    "commit": "ec7ebfb3c6767edc7575113562eac72e6d348732"
-                }
-            ]
-        },
-        {
-            "name": "bible",
-            "builddir": true,
-            "buildsystem": "meson",
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/Lugsole/net.lugsole.bible_gui",
-                    "commit": "f174572fb84bdbd68e9d39d360087538de9a0939"
+                    "type" : "git",
+                    "url" : "https://github.com/Lugsole/net.lugsole.bible_gui"
                 }
             ]
         }
-    ]
+    ],
+    "build-options" : {
+        "env" : {        }
+    }
 }

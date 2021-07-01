@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="3.0"/>
-  <requires lib="libhandy" version="1.0"/>
-  <template class="BibleSettings" parent="HdyPreferencesWindow">
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="BibleSettings" parent="AdwPreferencesWindow">
     <property name="default_height">700</property>
     <property name="default_width">640</property>
     <property name="width_request">300</property>
     <child>
-      <object class="HdyPreferencesPage">
+      <object class="AdwPreferencesPage">
         <property name="icon_name">edit-select-all-symbolic</property>
         <property name="title">Only Page</property>
         <property name="visible">True</property>
 
         <child>
-          <object class="HdyPreferencesGroup">
+          <object class="AdwPreferencesGroup">
             <property name="description" translatable="yes">Base preferences</property>
             <property name="title" translatable="yes">General</property>
             <property name="visible">True</property>
             <child>
-              <object class="HdyExpanderRow" id="translation">
+              <object class="AdwExpanderRow">
                 <property name="title" translatable="yes">Translation</property>
+                <property name="subtitle" translatable="yes">These come from the translation files</property>
                 <property name="visible">True</property>
                 <child>
-                  <object class="HdyActionRow">
+                  <object class="AdwActionRow">
                     <property name="title" translatable="yes">Import Translation</property>
                     <property name="visible">True</property>
                     <child>
@@ -41,6 +42,13 @@
                       </object>
                     </child>
                   </object>
+
+                </child>
+                <child>
+                <object class="GtkListBox" id="translation">
+                            <property name="visible">True</property>
+                            <property name="selection-mode">none</property>
+                          </object>
                 </child>
               </object>
             </child>

@@ -1,5 +1,6 @@
 from .Bible import Book, Verse
 from .Bible_Parser_Base import BibleParserBase
+import os
 
 
 class BibleParserTSV(BibleParserBase):
@@ -15,6 +16,7 @@ class BibleParserTSV(BibleParserBase):
             i = 0
             while i < len(lines):
                 i += self.prosessVerseData(lines, i)
+        self.bible.translationAbbreviation = os.path.basename(self.file_name)
 
     def loadAll(self):
 
@@ -23,6 +25,7 @@ class BibleParserTSV(BibleParserBase):
             i = 0
             while i < len(lines):
                 i += self.prosessVerseData(lines, i)
+        self.bible.translationAbbreviation = os.path.basename(self.file_name)
 
     def prosessVerseData(self, lines, index):
         data = lines[index].replace("\n", "").split('\t')

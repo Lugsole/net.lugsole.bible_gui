@@ -1,4 +1,4 @@
-pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
+pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), application_id)
 moduledir = join_paths(pkgdatadir, 'bible')
 
 gnome.compile_resources('bible',
@@ -13,13 +13,14 @@ python = import('python')
 conf = configuration_data()
 conf.set('PYTHON', python.find_installation('python3').path())
 conf.set('ESPEAK', find_program('espeak').path())
-conf.set('VERSION', meson.project_version())
+conf.set('VERSION', meson.project_version() + version_suffix)
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
+conf.set('APPLICATION_ID', application_id)
 
 configure_file(
   input: 'bible.in',
-  output: 'bible',
+  output: 'bible'+file_name_suffix,
   configuration: conf,
   install: true,
   install_dir: get_option('bindir')
@@ -49,7 +50,7 @@ bible_sources = [
   'settings.py'
 ]
 
-libhandy_dep = dependency('libhandy-1',
+libhandy_dep = dependency('libadwaita-1',
   version: '>=0.84.0'
   )
 

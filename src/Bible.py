@@ -23,7 +23,6 @@ class Bible:
     def addVerse(self, verse):
         for book in self.books:
             if book.number == verse.bookNumber:
-                # print(str(book))
                 book.addVerse(verse)
                 break
 
@@ -42,27 +41,77 @@ class Bible:
     def getBooksChapterNames(self, bookName):
         for book in self.books:
             if bookName == book.bookName:
-                # print("getBooksChapterNames", "Good")
                 return book.getChapterNames()
         return []
 
+
+    def getBookName(self, num):
+        for book in self.books:
+            if book.number == num:
+                return book
+        return None
+
     def getVerses(self, bookName, chapters):
-        # print("Finding", bookName)
         for book in self.books:
             if book.bookName == bookName:
-                # print("Match book",str(book))
                 return book.getVerses(chapters)
-            # else:
-
-                # print("No Match",str(book))
 
     def search(self, string):
         ret = []
         string = string.lower()
         for book in self.books:
             ret += book.search(string)
-        # print(ret)
         return ret
+
+    def search_chapters(self, string):
+        copy = Bible()
+
+        copy.translationName = self.translationName
+        copy.translationAbbreviation = self.translationAbbreviation
+        copy.translationInformation = self.translationInformation
+        copy.language = self.language
+        for book in self.books:
+            ret = book.search_chapters(string)
+            if ret is not None:
+                copy.append(ret)
+        return copy
+
+    def sort(self):
+        self.books.sort(key=lambda x: x.number)
+        for book in self.books:
+            book.sort()
+
+    def next(self, current_book, chapter):
+        found_next = False
+        next_chapter = None
+        found_next, next_chapter = current_book.next(chapter)
+        if found_next:
+            return found_next, current_book, next_chapter
+        try:
+            next_book_index = self.books.index(current_book)+1
+
+            if next_book_index < len(self.books):
+                next_book = self.books[next_book_index]
+                return True, next_book, next_book.chapters[0]
+        except ValueError:
+            return False, None, None
+        return False, None, None
+
+    def previous(self, current_book, chapter):
+        found_previous = False
+        previous_chapter = None
+        found_previous, previous_chapter = current_book.previous(chapter)
+        if found_previous:
+            return found_previous, current_book, previous_chapter
+        try:
+            previous_book_index = self.books.index(current_book)-1
+            if previous_book_index >= 0:
+                previous_book = self.books[previous_book_index]
+                return True, previous_book, previous_book.chapters[len(previous_book.chapters)-1]
+        except ValueError:
+            return False, None, None
+        return False, None, None
+
 
 
 class Book:
@@ -83,12 +132,10 @@ class Book:
         found = False
         for chapter in self.chapters:
             if chapter.number == verse.chapter:
-                # print("added Chapter")
                 chapter.addVerse(verse)
                 found = True
                 break
         if not found:
-            # print("New Chapter")
             c = Chapter(verse.chapter)
             c.addVerse(verse)
             self.chapters.append(c)
@@ -100,8 +147,19 @@ class Book:
             ret += chapter.search(string)
         return ret
 
+    def search_chapters(self, string):
+        copy = Book(self.bookName, self.number, self.shortName)
+        for chapter in self.chapters:
+
+            ret = chapter.search_chapters(string)
+            if ret is not None:
+                copy.addChapter(ret)
+        if len(copy.chapters)>0:
+            return copy
+        else:
+            return None
+
     def getChapterNames(self):
-        # print("getChapterNames","len", len(self.chapters))
         ret = []
         for chapter in self.chapters:
             ret.append(chapter.number)
@@ -112,11 +170,33 @@ class Book:
             if chapter.number == thereChapters:
                 return chapter.verses
 
+    def sort(self):
+        self.chapters.sort(key=lambda x: x.number)
+        for chapter in self.chapters:
+            chapter.sort()
+
+    def next(self, current_chapter):
+        next_chapter_index = self.chapters.index(current_chapter)+1
+        if next_chapter_index < len(self.chapters):
+            next_chapter = self.chapters[next_chapter_index]
+            return True, next_chapter
+        return False, None
+
+    def previous(self, current_chapter):
+        previous_chapter_index = self.chapters.index(current_chapter)-1
+        if previous_chapter_index >= 0:
+            previous_chapter = self.chapters[previous_chapter_index]
+            return True, previous_chapter
+        return False, None
+
 
 class Chapter:
     def __init__(self, number=-1):
         self.number = number
         self.verses = []
+
+    def __str__(self):
+        return str(self.number)
 
     def addVerse(self, verse):
         self.verses.append(verse)
@@ -127,8 +207,25 @@ class Chapter:
         for verse in self.verses:
             if string in verse.text.lower():
                 ret.append(verse)
-        # print(self.number,ret)
         return ret
+
+    def search_chapters(self, string):
+        ret = []
+        string = string.lower()
+        found_match = False
+        for verse in self.verses:
+            if string in verse.text.lower():
+                found_match = True
+                break
+        if not found_match:
+            return None
+        copy = Chapter(self.number)
+        for verse in self.verses:
+            copy.addVerse(verse)
+        return copy
+
+    def sort(self):
+        self.verses.sort(key=lambda x: x.verse)
 
 
 class Verse:

@@ -1,280 +1,224 @@
-<!-- Generated with glade 3.22.1 -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
-  <requires lib="libhandy" version="1.0"/>
-
-
-  <template class="BibleWindow" parent="GtkApplicationWindow">
-    <property name="title">Bible</property>
-    <property name="default_width">360</property>
-    <property name="default_height">576</property>
-    <child type="titlebar">
-      <object class="HdyTitleBar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="HdyLeaflet" id="header_box">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="visible-child-name" bind-source="content_box" bind-property="visible-child-name" bind-flags="sync-create"/>
-            <child>
-              <object class="GtkHeaderBar" id="header_bar">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="title">Books</property>
-                <property name="show_close_button">True</property>
-                <child>
-                  <object class="GtkMenuButton" id="menu_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="focus_on_click">False</property>
-                    <property name="popover">menu_popover</property>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">open-menu-symbolic</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="pack_type">end</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="name">sidebar</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparator">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <style>
-                  <class name="sidebar"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkHeaderBar" id="sub_header_bar">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
-                <property name="title">Bible</property>
-                <property name="show_close_button">True</property>
-                <child>
-                  <object class="GtkButton" id="back_button">
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">False</property>
-                    <property name="valign">center</property>
-                    <property name="use_underline">True</property>
-                    <property name="visible" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
-                    <child>
-                      <object class="GtkImage" id="back_image">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">go-previous-symbolic</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                    <style>
-                      <class name="image-button"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="play_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">False</property>
-                    <property name="valign">center</property>
-                    <property name="use_underline">True</property>
-                    <child>
-                      <object class="GtkImage" id="play_image">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">media-playback-start-symbolic</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                    <style>
-                      <class name="image-button"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="pack_type">end</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="name">content</property>
-              </packing>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="action">app.preferences</attribute>
+        <attribute name="label" translatable="yes">Preferences</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="action">app.about</attribute>
+        <attribute name="label" translatable="yes">About</attribute>
+      </item>
+    </section>
+  </menu>
+  <template class="BibleWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">Bible</property>
+    <property name="default-width">360</property>
+    <property name="default-height">576</property>
     <child>
-      <object class="HdyLeaflet" id="content_box">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="interpolate_size">True</property>
-        <child>
-          <object class="GtkScrolledWindow" id="sidebar">
-            <property name="width_request">270</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">False</property>
-            <property name="hscrollbar_policy">never</property>
-            <property name="shadow_type">in</property>
+          <object class="AdwLeaflet" id="subpage_leaflet">
+            <property name="can-swipe-back">True</property>
+            <property name="width-request">360</property>
+            <property name="can-unfold">False</property>
+            <property name="transition-type" bind-source="content_box" bind-property="transition-type" bind-flags="sync-create"/>
             <child>
-              <object class="GtkViewport">
-                <property name="width_request">270</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+              <object class="AdwLeaflet" id="content_box">
+                <property name="can-swipe-back">True</property>
                 <child>
                   <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkSearchEntry" id="search">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="margin_left">3</property>
-                        <property name="margin_right">3</property>
-                        <property name="margin_top">3</property>
-                        <property name="margin_bottom">3</property>
-                        <property name="primary_icon_name">edit-find-symbolic</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">False</property>
-                        <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_NONE</property>
+                      <object class="AdwHeaderBar">
+                        <property name="show-end-title-buttons" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
+                        <child type="start">
+                </child>
+                        <child type="end">
+                          <object class="GtkMenuButton" id="menu_button">
+                            <property name="menu-model">primary_menu</property>
+                            <property name="icon-name">open-menu-symbolic</property>
+                          </object>
+                        </child>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                     <child>
-                      <object class="GtkListBox" id="book_list">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="selection_mode">none</property>
+                      <object class="GtkScrolledWindow" id="sidebar">
+                        <property name="width-request">270</property>
+                        <property name="vexpand">True</property>
+                        <property name="hexpand">False</property>
+                        <property name="hscrollbar-policy">never</property>
+                        <child>
+                          <object class="GtkViewport">
+                            <property name="width-request">270</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkSearchEntry" id="search">
+                                    <property name="placeholder-text" translatable="yes">Search...</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkListBox" id="book_list">
+                                    <property name="selection-mode">none</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator">
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <style>
+                          <class name="sidebar"/>
+                        </style>
+                      </object>
                     </child>
                   </object>
                 </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="name">sidebar</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSeparator">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <style>
-              <class name="sidebar"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox" id="scrolled_window">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">2</property>
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="vexpand">True</property>
                 <child>
-                  <object class="GtkViewport">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                  <object class="GtkBox" id="right_box">
+                    <property name="hexpand">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">2</property>
                     <child>
-                      <object class="GtkGrid" id="myTable">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="valign">start</property>
-                        <property name="column_spacing">3</property>
+                      <object class="AdwHeaderBar" id="sub_header_bar">
+                        <property name="show-start-title-buttons" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
+                        <property name="title-widget">
+                          <object class="GtkBox"/>
+                        </property>
+                        <child type="start">
+                          <object class="GtkButton" id="back_button">
+                            <property name="valign">center</property>
+                            <property name="tooltip-text" translatable="yes">Back</property>
+                            <property name="icon-name">go-previous-symbolic</property>
+                            <property name="visible" bind-source="content_box" bind-property="folded" bind-flags="sync-create"/>
+                            <signal name="clicked" handler="back_clicked_cb"/>
+                          </object>
+                        </child>
+                        <child type="end">
+                          <object class="GtkBox">
+                            <property name="can-focus">False</property>
+                            <property name="spacing">6</property>
+                            <child>
+                              <object class="GtkButton" id="play_button">
+                                <property name="can-focus">False</property>
+                                <property name="receives-default">False</property>
+                                <property name="valign">center</property>
+                                <property name="use-underline">True</property>
+                                <child>
+                                  <object class="GtkImage" id="play_image">
+                                    <property name="can-focus">False</property>
+                                    <property name="icon-name">media-playback-start-symbolic</property>
+                                    <property name="icon_size">1</property>
+                                  </object>
+                                </child>
+                                <style>
+                                  <class name="image-button"/>
+                                </style>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="can-focus">False</property>
+                                <child>
+                                  <object class="GtkButton" id="previous_button">
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <signal name="clicked" handler="previous_chapter_cb"/>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="can-focus">False</property>
+                                        <property name="icon-name">go-previous-symbolic</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="next_button">
+                                    <property name="can-focus">True</property>
+                                    <property name="receives-default">True</property>
+                                    <signal name="clicked" handler="next_chapter_cb"/>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="can-focus">False</property>
+                                        <property name="icon-name">go-next-symbolic</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <style>
+                                  <class name="linked"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolled">
+                        <property name="width-request">270</property>
+                        <property name="vexpand">True</property>
+                        <property name="hexpand">False</property>
+                        <property name="hscrollbar-policy">never</property>
+                        <child>
+                          <object class="GtkViewport" id="viewport">
+                            <property name="can-focus">False</property>
+                            <child>
+                              <!-- n-columns=3 n-rows=3 -->
+                              <object class="GtkGrid" id="myTable">
+                                <property name="can-focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">start</property>
+                                <property name="column-spacing">3</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="name">content</property>
-          </packing>
-        </child>
-      </object>
     </child>
   </template>
-    <object class="GtkPopover" id="menu_popover">
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="spacing">6</property>
-        <property name="margin">18</property>
-        <property name="orientation">vertical</property>
-        <property name="width_request">200</property>
-        <child>
-          <object class="GtkModelButton">
-            <property name="action-name">app.preferences</property>
-            <property name="can-focus">True</property>
-            <property name="text" translatable="yes">Preferences</property>
-            <property name="visible">True</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkModelButton">
-            <property name="action-name">app.about</property>
-            <property name="can-focus">True</property>
-            <property name="text" translatable="yes">About</property>
-            <property name="visible">True</property>
-          </object>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkSizeGroup" id="end_pane_size_group">
-    <widgets>
-      <widget name="sub_header_bar"/>
-      <widget name="scrolled_window"/>
-    </widgets>
-  </object>
-  <object class="HdyHeaderGroup" id="header_group">
-    <headerbars>
-      <headerbar name="header_bar"/>
-      <headerbar name="sub_header_bar"/>
-    </headerbars>
-  </object>
-  <object class="GtkSizeGroup" id="start_pane_size_group">
-    <widgets>
-      <widget name="header_bar"/>
-      <widget name="sidebar"/>
-    </widgets>
-  </object>
 </interface>

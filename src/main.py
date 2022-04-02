@@ -57,7 +57,7 @@ class Application(Gtk.Application):
             dialog.get_style_context().add_class('devel')
         dialog.set_program_name(_("Bible"))
         dialog.set_comments(_("A Linux Bible app"))
-        dialog.set_copyright("© 2020 Lugsole")
+        dialog.set_copyright("© 2020-2022 Lugsole")
         dialog.set_version(VERSION)
         dialog.set_license_type(Gtk.License.MIT_X11)
         dialog.set_authors(["Lugsole"])

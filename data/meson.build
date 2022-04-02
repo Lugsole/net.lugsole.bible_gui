@@ -26,19 +26,12 @@ if desktop_utils.found()
     args: [desktop_file]
   )
 endif
-configure_file(
-  input: 'net.lugsole.bible_gui.appdata.xml.in',
-  output: application_id+'.appdata.xml',
-  configuration: conf,
-  install: true,
-  install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'metainfo')
-)
 appstream_file = configure_file(
   input: 'net.lugsole.bible_gui.appdata.xml.in',
   output: application_id+'.appdata.xml',
   configuration: conf,
   install: true,
-  install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'appdata')
+  install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'metainfo')
 )
 
 appstream_util = find_program('appstream-util', required: false)
@@ -50,7 +43,7 @@ endif
 
 schema_src = 'net.lugsole.bible_gui.gschema.xml'
 schema_src = configure_file(
-  input: 'net.lugsole.bible_gui.gschema.xml',
+  input: 'net.lugsole.bible_gui.gschema.xml.in',
   output: application_id+'.gschema.xml',
   configuration: conf,
   install: true,

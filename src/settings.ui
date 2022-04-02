@@ -11,7 +11,6 @@
         <property name="icon_name">edit-select-all-symbolic</property>
         <property name="title">Only Page</property>
         <property name="visible">True</property>
-
         <child>
           <object class="AdwPreferencesGroup">
             <property name="description" translatable="yes">Base preferences</property>
@@ -42,17 +41,15 @@
                       </object>
                     </child>
                   </object>
-
                 </child>
                 <child>
-                <object class="GtkListBox" id="translation">
-                            <property name="visible">True</property>
-                            <property name="selection-mode">none</property>
-                          </object>
+                  <object class="GtkListBox" id="translation">
+                    <property name="visible">True</property>
+                    <property name="selection-mode">none</property>
+                  </object>
                 </child>
               </object>
             </child>
-
           </object>
         </child>
       </object>

@@ -20,6 +20,7 @@ class BibleSettings(Adw.PreferencesWindow):
     __gtype_name__ = 'BibleSettings'
     translation = Gtk.Template.Child()
     importTranslation = Gtk.Template.Child()
+
     def __init__(self, App):
         super().__init__()
         self.App = App
@@ -87,6 +88,7 @@ class BibleSettings(Adw.PreferencesWindow):
                 p = BibleParser(bible_file)
                 if p is not None:
                     p.loadInfo()
+
                     row = BibleTranslationRow(p,
                                               self.translations_change,
                                               os.path.relpath(bible_file, base))

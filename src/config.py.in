@@ -5,5 +5,5 @@ espeak_path = '@ESPEAK@'
 application_id= '@APPLICATION_ID@'
 import os
 from gi.repository import GLib
-user_data_dir = os.path.join(GLib.get_user_data_dir(), application_id)
+user_data_dir = os.path.join(GLib.get_user_data_dir(), application_id, "translations")
 

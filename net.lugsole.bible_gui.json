@@ -32,7 +32,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/espeak-ng/espeak-ng",
-                    "commit" : "ec7ebfb3c6767edc7575113562eac72e6d348732"
+                    "commit" : "a25849e4d54a23ae1294b129d5696ca7e144ec8b"
                 }
             ]
         },

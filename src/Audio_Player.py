@@ -237,7 +237,7 @@ class Player(DBusInterface):
             'xesam:albumArtist': GLib.Variant('as', self._album_artist)
         }
         if self.playbin is not None:
-            print(self.playbin.query_duration(Gst.Format.TIME))
+            #print(self.playbin.query_duration(Gst.Format.TIME))
             rc, duration = self.playbin.query_duration(Gst.Format.TIME)
             if rc:
                 metadata['mpris:length'] = GLib.Variant('i', duration/1000)

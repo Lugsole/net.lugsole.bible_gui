@@ -1,18 +1,16 @@
 
 
-
+from .config import user_data_dir
+import shutil
+import os
+from gi.repository import Adw
+from gi.repository import GObject, GLib, Gtk, Gio
 import gi
 
 from .Bible_Parser import BibleParser, allParsers
 gi.require_version('Gtk', '4.0')
-from gi.repository import GObject, GLib, Gtk, Gio
 gi.require_version('Adw', '1')
-from gi.repository import Adw
-import os
-import shutil
 Adw.init()
-from .config import user_data_dir
-
 
 
 @Gtk.Template(resource_path='/net/lugsole/bible_gui/settings.ui')
@@ -36,9 +34,9 @@ class BibleSettings(Adw.PreferencesWindow):
         self.translations_load()
         self.show()
         if not os.path.isdir(user_data_dir):
-            os.mkdir(user_data_dir)
+            os.makedirs(user_data_dir, exist_ok=True)
 
-    def copy_translation(self,filename):
+    def copy_translation(self, filename):
         shutil.copy(filename, user_data_dir)
         self.translations_load()
 
@@ -46,6 +44,7 @@ class BibleSettings(Adw.PreferencesWindow):
         chooser = Gtk.FileChooserNative()
         chooser.set_transient_for(self)
         chooser.set_action(Gtk.FileChooserAction.OPEN)
+        '''
         filter = Gtk.FileFilter()
         filter.set_name("Any Bible format")
         chooser.add_filter(filter)
@@ -59,6 +58,7 @@ class BibleSettings(Adw.PreferencesWindow):
         filter.set_name("Any File")
         filter.add_pattern("*")
         chooser.add_filter(filter)
+        '''
         chooser.connect('response', self.import_translation_load)
         chooser.show()
         self.chooser = chooser
@@ -89,20 +89,22 @@ class BibleSettings(Adw.PreferencesWindow):
                 if p is not None:
                     p.loadInfo()
 
-                    row = BibleTranslationRow(p,
-                                              self.translations_change,
-                                              os.path.relpath(bible_file, base))
-                    if str(os.path.relpath(p.file_name,base)) == str(self.bible_file):
+                    row = BibleTranslationRow(
+                        p, self.translations_change, os.path.relpath(
+                            bible_file, base))
+                    if str(
+                            os.path.relpath(
+                                p.file_name,
+                                base)) == str(
+                            self.bible_file):
                         row.select()
                         self.current_translation_row = row
                     else:
                         row.deselect()
                     self.translation.append(row)
             except Exception as error:
-                print (bible_file, "Must not be a bible file")
+                print(bible_file, "Must not be a bible file")
                 print(error)
-
-
 
     def translations_change(self, button, data):
         try:
@@ -116,6 +118,7 @@ class BibleSettings(Adw.PreferencesWindow):
         except Exception:
             print("gsettings error")
 
+
 class BibleTranslationRow(Adw.ActionRow):
     def __init__(self, p, cb, rel_path):
         super().__init__()
@@ -127,7 +130,7 @@ class BibleTranslationRow(Adw.ActionRow):
         self.button = Gtk.Button(label="Change")
         self.button.connect('clicked', self.callback, rel_path)
         self.button.show()
-        self.checkmark= Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
+        self.checkmark = Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
 
         self.set_activatable_widget(self.button)
         self.box = Gtk.Box()
@@ -135,11 +138,14 @@ class BibleTranslationRow(Adw.ActionRow):
         self.box.append(self.checkmark)
         self.add_suffix(self.box)
         self.show()
+
     def deselect(self):
         self.button.show()
         self.checkmark.hide()
+
     def select(self):
         self.button.hide()
         self.checkmark.show()
+
     def callback(self, button, data):
         self.cb(self, self.rel_path)

@@ -1,10 +1,8 @@
+import re
+from gi.repository import Gst, GObject, Gio, GLib, Gtk
 import gi
 gi.require_version('Gst', '1.0')
-from gi.repository import Gst, GObject, Gio, GLib, Gtk
 
-
-
-import re
 
 class DBusInterface:
 
@@ -210,13 +208,13 @@ class Player(DBusInterface):
         self._app = app
 
         self._title = "Title"
-        self._album =  "Album"
+        self._album = "Album"
         self._artist = ["Artist"]
         self._album_artist = ["Artist"]
         self.playbin = None
 
     def _properties_changed(self, interface_name, changed_properties,
-                          invalidated_properties):
+                            invalidated_properties):
         self.__bus.emit_signal(None,
                                self.__MPRIS_PATH,
                                "org.freedesktop.DBus.Properties",
@@ -237,12 +235,11 @@ class Player(DBusInterface):
             'xesam:albumArtist': GLib.Variant('as', self._album_artist)
         }
         if self.playbin is not None:
-            #print(self.playbin.query_duration(Gst.Format.TIME))
+            # print(self.playbin.query_duration(Gst.Format.TIME))
             rc, duration = self.playbin.query_duration(Gst.Format.TIME)
             if rc:
-                metadata['mpris:length'] = GLib.Variant('i', duration/1000)
+                metadata['mpris:length'] = GLib.Variant('i', duration / 1000)
         return metadata
-
 
     def _get(self, interface_name, property_name):
         try:
@@ -324,7 +321,6 @@ class Player(DBusInterface):
         }
         self._dbus_emit_signal('PropertiesChanged', parameters)
 
-
     def _introspect(self):
         return self.__doc__
 
@@ -350,9 +346,8 @@ class Player(DBusInterface):
         if self._app._window:
             self._app._window.previous()
 
-
-
     cb = None
+
     def start_file(self, sound):
         # pathname2url escapes non-URL-safe characters
         import os
@@ -365,16 +360,18 @@ class Player(DBusInterface):
         if sound.startswith(('http://', 'https://')):
             self.playbin.props.uri = sound
         else:
-            self.playbin.props.uri = 'file://' + pathname2url(os.path.abspath(sound))
+            self.playbin.props.uri = 'file://' + \
+                pathname2url(os.path.abspath(sound))
         self.file = sound
         self.loop = GObject.MainLoop()
         bus = self.playbin.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self.bus_call, self.loop)
         properties = {
-                'CanPlay': GLib.Variant('b', self.has_content()),
-                'CanPause': GLib.Variant('b', self.has_content())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+            'CanPlay': GLib.Variant('b', self.has_content()),
+            'CanPause': GLib.Variant('b', self.has_content())}
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
     def bus_call(self, bus, message, loop):
         t = message.type
@@ -390,8 +387,11 @@ class Player(DBusInterface):
                 self.state_change_cb()
             # print(old_state, new_state, pending_state)
             if old_state == Gst.State.NULL:
-                properties = {"Metadata": GLib.Variant("a{sv}", self._get_metadata())}
-                self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+                properties = {
+                    "Metadata": GLib.Variant(
+                        "a{sv}", self._get_metadata())}
+                self._properties_changed(
+                    self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
             pass
         else:
             #print("Some other message type: " + str(message.type))
@@ -401,23 +401,26 @@ class Player(DBusInterface):
     def set_title(self, title):
         self._title = title
         properties = {"Metadata": GLib.Variant("a{sv}", self._get_metadata())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
     def set_artist(self, artist):
         self._artist = artist
         self._album_artist = artist
         properties = {"Metadata": GLib.Variant("a{sv}", self._get_metadata())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
     def set_album(self, album):
         self._album = album
         properties = {"Metadata": GLib.Variant("a{sv}", self._get_metadata())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
-    def add_callback(self,cb):
+    def add_callback(self, cb):
         self.cb = cb
 
-    def add_state_change_callback(self,cb):
+    def add_state_change_callback(self, cb):
         self.state_change_cb = cb
 
     def _play(self):
@@ -426,7 +429,8 @@ class Player(DBusInterface):
             raise PlaysoundException(
                 "playbin.set_state returned " + repr(set_result))
         properties = {"PlaybackStatus": GLib.Variant("s", self.get_status())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
     def _pause(self):
         set_result = self.playbin.set_state(Gst.State.PAUSED)
@@ -434,8 +438,8 @@ class Player(DBusInterface):
             raise PlaysoundException(
                 "playbin.set_state returned " + repr(set_result))
         properties = {"PlaybackStatus": GLib.Variant("s", self.get_status())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
-
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
     def _play_pause(self):
         (ret, state, pending) = self.playbin.get_state(Gst.CLOCK_TIME_NONE)
@@ -444,17 +448,22 @@ class Player(DBusInterface):
         else:
             self._play()
 
-    def _seek(self,time):
-        print("_seek",time)
+    def _seek(self, time):
+        print("_seek", time)
         success, position = self.playbin.query_position(Gst.Format.TIME)
         if not success:
-                raise GenericException("Couldn't fetch current song position to update slider")
-        print(position, time*1000)
-        print(position + time*1000)
-        if position + time*1000 > 0:
-            self.playbin.seek_simple(Gst.Format.TIME,  Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT, position + time*1000)
+            raise GenericException(
+                "Couldn't fetch current song position to update slider")
+        print(position, time * 1000)
+        print(position + time * 1000)
+        if position + time * 1000 > 0:
+            self.playbin.seek_simple(
+                Gst.Format.TIME,
+                Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT,
+                position + time * 1000)
         else:
-            self.playbin.seek_simple(Gst.Format.TIME,  Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT, 0)
+            self.playbin.seek_simple(
+                Gst.Format.TIME, Gst.SeekFlags.FLUSH | Gst.SeekFlags.KEY_UNIT, 0)
 
     def _raise(self):
         self._app.raide_main_window()
@@ -469,9 +478,10 @@ class Player(DBusInterface):
         else:
             self.playbin = None
         properties = {
-                'CanPlay': GLib.Variant('b', self.has_content()),
-                'CanPause': GLib.Variant('b', self.has_content())}
-        self._properties_changed(self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
+            'CanPlay': GLib.Variant('b', self.has_content()),
+            'CanPause': GLib.Variant('b', self.has_content())}
+        self._properties_changed(
+            self.MEDIA_PLAYER2_PLAYER_IFACE, properties, [])
 
     def getstate(self):
         if self.playbin is not None:

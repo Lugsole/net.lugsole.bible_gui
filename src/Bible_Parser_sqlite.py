@@ -6,12 +6,14 @@ from .Bible_Parser_Base import BibleParserBase
 
 class BibleParserSqLit3(BibleParserBase):
     name = "SQLite/My Bible"
-    fileEndings = ["SQLite3","sqlite"]
+    fileEndings = ["SQLite3", "sqlite"]
+
     def __init__(self, file_name):
         BibleParserBase.__init__(self, file_name)
 
     def isValidFileEnding(self, filename):
-        return '.sqlite3' in filename.lower() and not '.commentaries.sqlite3' in filename.lower() and not '.dictionary.sqlite3' in filename.lower()and not '.crossreferences.sqlite3' in filename.lower()
+        return '.sqlite3' in filename.lower() and '.commentaries.sqlite3' not in filename.lower(
+        ) and '.dictionary.sqlite3' not in filename.lower() and '.crossreferences.sqlite3' not in filename.lower()
 
     def loadInfo(self):
         conn = sqlite3.connect(self.file_name)
@@ -31,7 +33,8 @@ class BibleParserSqLit3(BibleParserBase):
         txt = c.fetchone()
         if txt is not None and txt[1] is not None:
             self.bible.language = txt[1]
-        for row in c.execute('SELECT long_name,book_number,short_name FROM books'):
+        for row in c.execute(
+                'SELECT long_name,book_number,short_name FROM books'):
             self.bible.append(
                 Book(row[0], number=int(row[1]), shortName=row[2]))
 
@@ -41,14 +44,14 @@ class BibleParserSqLit3(BibleParserBase):
         self.loadInfo()
         conn = sqlite3.connect(self.file_name)
         c = conn.cursor()
-        for row in c.execute('SELECT book_number, chapter, verse, text FROM verses'):
+        for row in c.execute(
+                'SELECT book_number, chapter, verse, text FROM verses'):
             verseText = row[3].rstrip()
             verseText = re.sub(
-               r"\<(?<=\<)(.*?)(?=\>)\>",
-               "",
-               verseText
+                r"\<(?<=\<)(.*?)(?=\>)\>",
+                "",
+                verseText
             )
             self.bible.addVerse(
                 Verse(int(row[0]), int(row[1]), int(row[2]), verseText))
         conn.close()
-

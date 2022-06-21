@@ -1,5 +1,6 @@
 from .Bible import *
 
+
 class BibleParserBase:
     name = "Base"
     fileEndings = []
@@ -10,14 +11,14 @@ class BibleParserBase:
 
     def isValidFileEnding(self, file_name):
         for ending in self.fileEndings:
-           if  '.'+ending in file_name:
-               return True
+            if '.' + ending in file_name:
+                return True
         return False
 
-    def getParserName (self):
+    def getParserName(self):
         return self.name
 
-    def getParserEndings (self):
+    def getParserEndings(self):
         return self.fileEndings
 
     def loadAll(self):
@@ -25,6 +26,7 @@ class BibleParserBase:
 
     def loadInfo(self):
         pass
+
 
 def check_extention(type_class, file_name):
     return type_class.isValidFileEnding(type_class, file_name)

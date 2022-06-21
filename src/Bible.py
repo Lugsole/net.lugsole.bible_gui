@@ -44,7 +44,6 @@ class Bible:
                 return book.getChapterNames()
         return []
 
-
     def getBookName(self, num):
         for book in self.books:
             if book.number == num:
@@ -88,7 +87,7 @@ class Bible:
         if found_next:
             return found_next, current_book, next_chapter
         try:
-            next_book_index = self.books.index(current_book)+1
+            next_book_index = self.books.index(current_book) + 1
 
             if next_book_index < len(self.books):
                 next_book = self.books[next_book_index]
@@ -104,14 +103,14 @@ class Bible:
         if found_previous:
             return found_previous, current_book, previous_chapter
         try:
-            previous_book_index = self.books.index(current_book)-1
+            previous_book_index = self.books.index(current_book) - 1
             if previous_book_index >= 0:
                 previous_book = self.books[previous_book_index]
-                return True, previous_book, previous_book.chapters[len(previous_book.chapters)-1]
+                return True, previous_book, previous_book.chapters[len(
+                    previous_book.chapters) - 1]
         except ValueError:
             return False, None, None
         return False, None, None
-
 
 
 class Book:
@@ -154,7 +153,7 @@ class Book:
             ret = chapter.search_chapters(string)
             if ret is not None:
                 copy.addChapter(ret)
-        if len(copy.chapters)>0:
+        if len(copy.chapters) > 0:
             return copy
         else:
             return None
@@ -176,14 +175,14 @@ class Book:
             chapter.sort()
 
     def next(self, current_chapter):
-        next_chapter_index = self.chapters.index(current_chapter)+1
+        next_chapter_index = self.chapters.index(current_chapter) + 1
         if next_chapter_index < len(self.chapters):
             next_chapter = self.chapters[next_chapter_index]
             return True, next_chapter
         return False, None
 
     def previous(self, current_chapter):
-        previous_chapter_index = self.chapters.index(current_chapter)-1
+        previous_chapter_index = self.chapters.index(current_chapter) - 1
         if previous_chapter_index >= 0:
             previous_chapter = self.chapters[previous_chapter_index]
             return True, previous_chapter
@@ -240,7 +239,8 @@ class Verse:
         return self.text
 
     def __str__(self):
-        return "Verse(" + str(self.bookNumber) + ", " + str(self.chapter) + ", " + str(self.verse) + ", " + self.text + ")"
+        return "Verse(" + str(self.bookNumber) + ", " + str(self.chapter) + \
+            ", " + str(self.verse) + ", " + self.text + ")"
 
 
 class bibleSearchResults:
@@ -261,4 +261,3 @@ class bibleSearchResults:
             self.sameBookNumber = False
         if not result.verse == self.results[0].verse:
             self.sameBookNumber = False
-

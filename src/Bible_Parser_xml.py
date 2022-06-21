@@ -3,6 +3,7 @@ from .Bible_Parser_Base import BibleParserBase
 import xml.etree.ElementTree as ET
 import os.path
 
+
 class BibleParserXML(BibleParserBase):
     name = "XML"
     fileEndings = ["xml"]

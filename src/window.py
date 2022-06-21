@@ -1,19 +1,19 @@
 
 
+from gettext import gettext as _
+import time
+import os
+from .config import pkgdatadir, application_id, user_data_dir
+from gi.repository import Adw
+from gi.repository import Gtk, Gio, Gst, Gdk
 import gi
 
 from .tts import readText
 from .Bible_Parser import BibleParser
 gi.require_version('Gtk', '4.0')
 gi.require_version('Gst', '1.0')
-from gi.repository import Gtk, Gio, Gst, Gdk
 gi.require_version('Adw', '1')
-from gi.repository import Adw
-from .config import pkgdatadir, application_id, user_data_dir
-import os
-import time
 Adw.init()
-
 
 
 @Gtk.Template(resource_path='/net/lugsole/bible_gui/window.ui')
@@ -90,7 +90,7 @@ class BibleWindow(Adw.ApplicationWindow):
                 self.right_box,
                 book, chapter)
 
-            flowbox.insert(button,-1)
+            flowbox.insert(button, -1)
         expand = Adw.ExpanderRow()
         expand.set_property("title", book.bookName)
 
@@ -123,13 +123,15 @@ class BibleWindow(Adw.ApplicationWindow):
                 break
         if SameBook and SameCh:
             text = Gtk.Label()
-            text.set_label( self.book.bookName + " - " + str(self.chapter.number))
+            text.set_label(self.book.bookName + " - " +
+                           str(self.chapter.number))
             self.sub_header_bar.set_title_widget(text)
         i = 0
         for verse in verses:
             text_label = ""
             if not SameBook:
-                text_label += self.Bible.getBookName(verse.bookNumber).bookName + " "
+                text_label += self.Bible.getBookName(
+                    verse.bookNumber).bookName + " "
 
             if not SameBook or not SameCh:
                 text_label += str(verse.chapter) + ":"
@@ -165,7 +167,7 @@ class BibleWindow(Adw.ApplicationWindow):
         self.UpdateBooks()
 
     def show_page(self, button, page, book, chapter):
-        if  self.chapter is not chapter:
+        if self.chapter is not chapter:
             self.App.player.end()
             self.chapter = chapter
             self.book = book
@@ -179,17 +181,18 @@ class BibleWindow(Adw.ApplicationWindow):
 
     def readChapter(self, button):
         read = ""
-        if  self.App.player.getstate() == Gst.State.PLAYING:
+        if self.App.player.getstate() == Gst.State.PLAYING:
             self.App.player._pause()
         elif self.App.player.getstate() == Gst.State.PAUSED:
             self.App.player._play()
         else:
             for verse in self.chapter.verses:
                 read += verse.text + " "
-            self.App.player.start_file( readText(read, self.Bible.language))
+            self.App.player.start_file(readText(read, self.Bible.language))
             self.App.player.set_title(str(self.book) + " " + str(self.chapter))
             if self.Bible.translationName == '':
-                self.App.player.set_artist([self.Bible.translationAbbreviation])
+                self.App.player.set_artist(
+                    [self.Bible.translationAbbreviation])
             else:
                 self.App.player.set_artist([self.Bible.translationName])
             self.App.player.set_album(_("Bible"))
@@ -201,10 +204,14 @@ class BibleWindow(Adw.ApplicationWindow):
         self.update_play_icon()
 
     def update_play_icon(self):
-        action= "start"
+        action = "start"
         if self.App.player.getstate() == Gst.State.PLAYING:
-            action= "pause"
-        self.play_image.set_property("icon_name", "media-playback-"+action+"-symbolic")
+            action = "pause"
+        self.play_image.set_property(
+            "icon_name",
+            "media-playback-" +
+            action +
+            "-symbolic")
 
     def on_bible_translation_changed(self, settings, key):
         base_file = settings.get_string("bible-translation")
@@ -217,7 +224,7 @@ class BibleWindow(Adw.ApplicationWindow):
         self.UpdateBooks()
 
     @Gtk.Template.Callback()
-    def next_chapter_cb(self,a):
+    def next_chapter_cb(self, a):
         self.next()
 
     def next(self):
@@ -241,7 +248,7 @@ class BibleWindow(Adw.ApplicationWindow):
         return Found
 
     @Gtk.Template.Callback()
-    def previous_chapter_cb(self,a):
+    def previous_chapter_cb(self, a):
         self.previous()
 
     def previous(self):

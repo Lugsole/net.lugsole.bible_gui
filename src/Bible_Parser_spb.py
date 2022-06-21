@@ -8,6 +8,7 @@ class BibleParserSPB(BibleParserBase):
     book = 0
     chapter = 0
     verse = 0
+
     def __init__(self, file_name):
         BibleParserBase.__init__(self, file_name)
 
@@ -48,11 +49,11 @@ class BibleParserSPB(BibleParserBase):
             return 1
         elif line.startswith("##RightToLeft:"):
             offset = 1
-            while index+offset < len(lines) and not(
-                lines[index+offset].startswith("##") or
-                lines[index+offset].startswith("--")
+            while index + offset < len(lines) and not(
+                lines[index + offset].startswith("##") or
+                lines[index + offset].startswith("--")
             ):
-                line = lines[index+offset]
+                line = lines[index + offset]
                 parts = line.split('\t')
                 self.bible.append(Book(parts[1], int(parts[0])))
                 offset += 1
@@ -66,14 +67,32 @@ class BibleParserSPB(BibleParserBase):
         if len(data) == 5:
             self.bible.addVerse(
                 Verse(int(data[1]),
-                int(data[2]),
-                int(data[3]),
-                data[4].rstrip()))
+                      int(data[2]),
+                      int(data[3]),
+                      data[4].rstrip()))
             if not(
-            (self.verse +1 == int(data[3]) and self.chapter  == int(data[2]) and self.book  == int(data[1])) or
-            (1 == int(data[3]) and self.chapter+1  == int(data[2]) and self.book  == int(data[1])) or
-            (1 == int(data[3]) and (1  == int(data[2]) or 0  == int(data[2])) and self.book + 1  == int(data[1])) ):
-                print("Unusual transition:", self.book,self.chapter, self.verse)
+                (self.verse +
+                 1 == int(
+                     data[3]) and self.chapter == int(
+                     data[2]) and self.book == int(
+                     data[1])) or (
+                    1 == int(
+                        data[3]) and self.chapter +
+                    1 == int(
+                        data[2]) and self.book == int(
+                        data[1])) or (
+                    1 == int(
+                        data[3]) and (
+                        1 == int(
+                            data[2]) or 0 == int(
+                            data[2])) and self.book +
+                    1 == int(
+                        data[1]))):
+                print(
+                    "Unusual transition:",
+                    self.book,
+                    self.chapter,
+                    self.verse)
             self.book = int(data[1])
             self.chapter = int(data[2])
             self.verse = int(data[3])

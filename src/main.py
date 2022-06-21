@@ -1,17 +1,14 @@
 
+from gettext import gettext as _
+from .settings import BibleSettings
+from .config import application_id, VERSION
+from .Audio_Player import Player
+from .window import BibleWindow
+from gi.repository import Gtk, Gio, GLib
 import sys
 import gi
 
 gi.require_version('Gtk', '4.0')
-
-
-from gi.repository import Gtk, Gio, GLib
-
-
-from .window import BibleWindow
-from .Audio_Player import Player
-from .config import application_id, VERSION
-from .settings import BibleSettings
 
 
 class Application(Gtk.Application):
@@ -25,7 +22,6 @@ class Application(Gtk.Application):
         GLib.set_prgname(application_id)
         GLib.setenv("PULSE_PROP_media.role", "music", True)
         self.player = Player(self)
-
         action_print = Gio.SimpleAction.new("preferences", None)
         action_print.connect("activate", self.launch_settings)
         self.add_action(action_print)
@@ -50,8 +46,7 @@ class Application(Gtk.Application):
         if self.props.application_id == "net.lugsole.bible_gui.Devel":
             settings.get_style_context().add_class('devel')
 
-
-    def show_about(self,e1, e2):
+    def show_about(self, e1, e2):
         dialog = Gtk.AboutDialog()
         if self.props.application_id == "net.lugsole.bible_gui.Devel":
             dialog.get_style_context().add_class('devel')
@@ -63,7 +58,6 @@ class Application(Gtk.Application):
         dialog.set_authors(["Lugsole"])
         dialog.set_logo_icon_name(application_id)
         dialog.show()
-
 
 
 def main(version):

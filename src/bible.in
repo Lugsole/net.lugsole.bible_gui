@@ -13,7 +13,6 @@ LOCALE_DIR = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-gettext.install('@APPLICATION_ID@', LOCALE_DIR)
 
 def set_internationalization():
     """Sets application internationalization."""
@@ -29,7 +28,6 @@ def set_internationalization():
 
     gettext.bindtextdomain('@APPLICATION_ID@', LOCALE_DIR)
     gettext.textdomain('@APPLICATION_ID@')
-
     
 if __name__ == '__main__':
     import gi

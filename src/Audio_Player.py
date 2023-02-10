@@ -1,7 +1,7 @@
-import re
-from gi.repository import Gst, GObject, Gio, GLib, Gtk
 import gi
 gi.require_version('Gst', '1.0')
+import re
+from gi.repository import Gst, GObject, Gio, GLib, Gtk
 
 
 class DBusInterface:

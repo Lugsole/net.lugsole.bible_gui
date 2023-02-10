@@ -1,14 +1,15 @@
 
+import gi
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
+
 from gettext import gettext as _
 from .settings import BibleSettings
 from .config import application_id, VERSION
 from .Audio_Player import Player
 from .window import BibleWindow
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Adw, Gtk, Gio, GLib
 import sys
-import gi
-
-gi.require_version('Gtk', '4.0')
 
 
 class Application(Gtk.Application):
@@ -47,16 +48,16 @@ class Application(Gtk.Application):
             settings.get_style_context().add_class('devel')
 
     def show_about(self, e1, e2):
-        dialog = Gtk.AboutDialog()
+        dialog = Adw.AboutWindow()
         if self.props.application_id == "net.lugsole.bible_gui.Devel":
             dialog.get_style_context().add_class('devel')
-        dialog.set_program_name(_("Bible"))
+        dialog.set_application_name(_("Bible"))
         dialog.set_comments(_("A Linux Bible app"))
         dialog.set_copyright("© 2020-2022 Lugsole")
         dialog.set_version(VERSION)
         dialog.set_license_type(Gtk.License.MIT_X11)
-        dialog.set_authors(["Lugsole"])
-        dialog.set_logo_icon_name(application_id)
+        dialog.set_developers(["Lugsole"])
+        dialog.set_application_icon(application_id)
         dialog.show()
 
 

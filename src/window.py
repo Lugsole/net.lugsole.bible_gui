@@ -1,3 +1,7 @@
+import gi
+gi.require_version('Gtk', '4.0')
+gi.require_version('Gst', '1.0')
+gi.require_version('Adw', '1')
 
 
 from gettext import gettext as _
@@ -10,9 +14,6 @@ import gi
 
 from .tts import readText
 from .Bible_Parser import BibleParser
-gi.require_version('Gtk', '4.0')
-gi.require_version('Gst', '1.0')
-gi.require_version('Adw', '1')
 Adw.init()
 
 

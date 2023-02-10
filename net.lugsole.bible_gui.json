@@ -1,7 +1,7 @@
 {
     "app-id" : "net.lugsole.bible_gui",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "42",
+    "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
     "command" : "bible",
     "finish-args" : [

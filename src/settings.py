@@ -1,15 +1,14 @@
-
+import gi
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
 
 from .config import user_data_dir
 import shutil
 import os
 from gi.repository import Adw
 from gi.repository import GObject, GLib, Gtk, Gio
-import gi
 
 from .Bible_Parser import BibleParser, allParsers
-gi.require_version('Gtk', '4.0')
-gi.require_version('Adw', '1')
 Adw.init()
 
 

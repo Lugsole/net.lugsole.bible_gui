@@ -23,24 +23,22 @@ class Application(Gtk.Application):
         GLib.set_prgname(application_id)
         GLib.setenv("PULSE_PROP_media.role", "music", True)
         self.player = Player(self)
-        action_print = Gio.SimpleAction.new("preferences", None)
-        action_print.connect("activate", self.launch_settings)
-        self.add_action(action_print)
+        self.create_action("preferences", self.launch_settings, ['<primary>comma'])
         action_print = Gio.SimpleAction.new("about", None)
         action_print.connect("activate", self.show_about)
         self.add_action(action_print)
 
     def do_activate(self):
-        self._window = self.props.active_window
-        if not self._window:
-            self._window = BibleWindow(self, application=self)
-        self._window.present()
+        self.window = self.props.active_window
+        if not self.window:
+            self.window = BibleWindow(self, application=self)
+        self.window.present()
 
         if self.props.application_id == "net.lugsole.bible_gui.Devel":
-            self._window.get_style_context().add_class('devel')
+            self.window.get_style_context().add_class('devel')
 
     def raide_main_window(self):
-        self._window.present()
+        self.window.present()
 
     def launch_settings(self, e1, e2):
         settings = BibleSettings(self)
@@ -60,6 +58,21 @@ class Application(Gtk.Application):
         dialog.set_application_icon(application_id)
         dialog.show()
 
+    def create_action(self, name, callback, shortcuts=None, param=None):
+        """Add an application action.
+
+        Args:
+            name: the name of the action
+            callback: the function to be called when the action is
+              activated
+            shortcuts: an optional list of accelerators
+            param: an optional list of parameters for the action
+        """
+        action = Gio.SimpleAction.new(name, param)
+        action.connect("activate", callback)
+        self.add_action(action)
+        if shortcuts:
+            self.set_accels_for_action(f"app.{name}", shortcuts)
 
 def main(version):
 

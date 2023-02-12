@@ -206,8 +206,10 @@ class BibleWindow(Adw.ApplicationWindow):
 
     def update_play_icon(self):
         action = "start"
+        self.play_button.set_tooltip_text(_("Play screen reader"))
         if self.App.player.getstate() == Gst.State.PLAYING:
             action = "pause"
+            self.play_button.set_tooltip_text(_("Pause screen reader"))
         self.play_image.set_property(
             "icon_name",
             "media-playback-" +

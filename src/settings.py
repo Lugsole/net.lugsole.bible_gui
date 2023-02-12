@@ -23,6 +23,7 @@ class BibleSettings(Adw.PreferencesWindow):
         self.App = App
         self.bible_file = ""
         self.current_translation_row = None
+        self.set_transient_for(App.window)
 
         try:
             settings = Gio.Settings.new(self.App.BASE_KEY)
@@ -41,7 +42,7 @@ class BibleSettings(Adw.PreferencesWindow):
 
     def import_translation(self, button):
         chooser = Gtk.FileChooserNative()
-        chooser.set_transient_for(self)
+        chooser.set_transient_for(self.App.window)
         chooser.set_action(Gtk.FileChooserAction.OPEN)
         '''
         filter = Gtk.FileFilter()
@@ -66,9 +67,6 @@ class BibleSettings(Adw.PreferencesWindow):
         if res == Gtk.ResponseType.ACCEPT:
             for file in chooser.get_files():
                 self.copy_translation(file.get_path())
-            chooser.destroy()
-            self.chooser.destroy()
-        else:
             chooser.destroy()
             self.chooser.destroy()
 

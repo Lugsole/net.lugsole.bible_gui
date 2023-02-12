@@ -52,11 +52,11 @@ class Application(Gtk.Application):
         if self.props.application_id == "net.lugsole.bible_gui.Devel":
             dialog.get_style_context().add_class('devel')
         dialog.set_application_name(_("Bible"))
-        dialog.set_comments(_("A Linux Bible app"))
-        dialog.set_copyright("© 2020-2022 Lugsole")
+        dialog.set_website("https://lugsole.net/programs/bible")
+        dialog.set_copyright("Copyright © 2020-2022 Lugsole")
         dialog.set_version(VERSION)
         dialog.set_license_type(Gtk.License.MIT_X11)
-        dialog.set_developers(["Lugsole"])
+        dialog.set_developers(["Lugsole https://lugsole.net"])
         dialog.set_application_icon(application_id)
         dialog.show()
 

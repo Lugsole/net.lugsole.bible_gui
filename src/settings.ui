@@ -3,9 +3,6 @@
   <requires lib="gtk+" version="3.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="BibleSettings" parent="AdwPreferencesWindow">
-    <property name="default_height">700</property>
-    <property name="default_width">640</property>
-    <property name="width_request">300</property>
     <child>
       <object class="AdwPreferencesPage">
         <property name="icon_name">edit-select-all-symbolic</property>
@@ -13,8 +10,6 @@
         <property name="visible">True</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="description" translatable="yes">Base preferences</property>
-            <property name="title" translatable="yes">General</property>
             <property name="visible">True</property>
             <child>
               <object class="AdwExpanderRow">
@@ -29,6 +24,7 @@
                       <object class="GtkButton" id="importTranslation">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="valign">center</property>
                         <signal name="clicked" swapped="yes" handler="avatar_file_remove_cb"/>
                         <child>
                           <object class="GtkImage">

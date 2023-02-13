@@ -47,6 +47,13 @@ class BibleSettings(Adw.PreferencesWindow):
         filter = Gtk.FileFilter()
         filter.set_name("Supported Bible files")
         filter.add_mime_type("application/vnd.sqlite3")
+        filter.add_mime_type("application/xml")
+        filter.add_mime_type("text/tab-separated-values")
+        chooser.add_filter(filter)
+
+        filter = Gtk.FileFilter()
+        filter.set_name("All files")
+        filter.add_pattern("*")
         chooser.add_filter(filter)
 
         chooser.connect('response', self.import_translation_load)

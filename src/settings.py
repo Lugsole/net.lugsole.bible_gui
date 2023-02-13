@@ -44,11 +44,21 @@ class BibleSettings(Adw.PreferencesWindow):
         chooser = Gtk.FileChooserNative()
         chooser.set_transient_for(self.App.window)
         chooser.set_action(Gtk.FileChooserAction.OPEN)
+        '''
         filter = Gtk.FileFilter()
-        filter.set_name("Supported Bible files")
-        filter.add_mime_type("application/vnd.sqlite3")
+        filter.set_name("Any Bible format")
         chooser.add_filter(filter)
-
+        for parser in allParsers:
+            filter = Gtk.FileFilter()
+            filter.set_name(parser.getParserName(parser))
+            for ending in parser.getParserEndings(parser):
+                filter.add_pattern("*."+ ending)
+            chooser.add_filter(filter)
+        filter = Gtk.FileFilter()
+        filter.set_name("Any File")
+        filter.add_pattern("*")
+        chooser.add_filter(filter)
+        '''
         chooser.connect('response', self.import_translation_load)
         chooser.show()
         self.chooser = chooser

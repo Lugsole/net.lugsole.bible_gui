@@ -71,8 +71,8 @@ class BibleSettings(Adw.PreferencesWindow):
             self.chooser.destroy()
 
     def translations_load(self):
-        while self.translation.get_row_at_index(0) is not None:
-            self.translation.remove(self.translation.get_row_at_index(0))
+        # while self.translation.get_row_at_index(0) is not None:
+        #     self.translation.remove(self.translation.get_row_at_index(0))
         all_files = []
         base = user_data_dir
         for root, dirs, files in os.walk(base):
@@ -86,9 +86,9 @@ class BibleSettings(Adw.PreferencesWindow):
                 if p is not None:
                     p.loadInfo()
 
-                    row = BibleTranslationRow(
-                        p, self.translations_change, os.path.relpath(
-                            bible_file, base))
+                    # row = BibleTranslationRow(
+                    #     p, self.translations_change, os.path.relpath(
+                    #         bible_file, base))
                     if str(
                             os.path.relpath(
                                 p.file_name,
@@ -98,7 +98,7 @@ class BibleSettings(Adw.PreferencesWindow):
                         self.current_translation_row = row
                     else:
                         row.deselect()
-                    self.translation.append(row)
+                    # self.translation.append(row)
             except Exception as error:
                 print(bible_file, "Must not be a bible file")
                 print(error)

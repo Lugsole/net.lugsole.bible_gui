@@ -10,69 +10,41 @@
         <property name="visible">True</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title">Translation</property>
             <property name="visible">True</property>
             <child>
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Import Translation</property>
+              <object class="AdwExpanderRow">
+                <property name="title" translatable="yes">Translation</property>
+                <property name="subtitle" translatable="yes">These come from the translation files</property>
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkButton" id="importTranslation">
-                    <property name="valign">center</property>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Import Translation</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <signal name="clicked" swapped="yes" handler="avatar_file_remove_cb"/>
                     <child>
-                      <object class="GtkImage">
+                      <object class="GtkButton" id="importTranslation">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">document-save-symbolic</property>
-                        <property name="icon_size">1</property>
+                        <property name="can_focus">True</property>
+                        <signal name="clicked" swapped="yes" handler="avatar_file_remove_cb"/>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">document-save-symbolic</property>
+                            <property name="icon_size">1</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="AdwActionRow" id="application">
-                <property name="activatable-widget">check_application</property>
-                <property name="title" translatable="true">_Application</property>
-                <property name="use-underline">true</property>
                 <child>
-                  <object class="GtkCheckButton" id="check_application">
-                    <style>
-                      <class name="selection-mode"/>
-                    </style>
+                  <object class="GtkListBox" id="translation">
+                    <property name="visible">True</property>
+                    <property name="selection-mode">none</property>
                   </object>
                 </child>
               </object>
             </child>
-            <child>
-              <object class="AdwActionRow" id="ga">
-                <property name="activatable-widget">check_ga</property>
-                <property name="title" translatable="true">_Application</property>
-                <property name="use-underline">true</property>
-                <child>
-                  <object class="GtkCheckButton" id="check_ga">
-                    <property name="group">check_application</property>
-                    <style>
-                      <class name="selection-mode"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <!-- <child> -->
-            <!--   <object class="GtkListBox" id="translation"> -->
-            <!--     <property name="visible">True</property> -->
-            <!--     <property name="selection-mode">none</property> -->
-            <!--   </object> -->
-            <!-- </child> -->
           </object>
         </child>
       </object>

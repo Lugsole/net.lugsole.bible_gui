@@ -10,47 +10,33 @@
       <object class="AdwPreferencesPage">
         <property name="icon_name">edit-select-all-symbolic</property>
         <property name="title">Only Page</property>
-        <property name="visible">True</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="description" translatable="yes">Base preferences</property>
-            <property name="title" translatable="yes">General</property>
-            <property name="visible">True</property>
+            <property name="title" translatable="yes">Translation</property>
             <child>
-              <object class="AdwExpanderRow">
-                <property name="title" translatable="yes">Translation</property>
-                <property name="subtitle" translatable="yes">These come from the translation files</property>
-                <property name="visible">True</property>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Import Translation</property>
                 <child>
-                  <object class="AdwActionRow">
-                    <property name="title" translatable="yes">Import Translation</property>
-                    <property name="visible">True</property>
+                  <object class="GtkButton" id="importTranslation">
+                    <property name="can_focus">True</property>
+                    <property name="valign">center</property>
+                    <signal name="clicked" swapped="yes" handler="avatar_file_remove_cb"/>
                     <child>
-                      <object class="GtkButton" id="importTranslation">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal name="clicked" swapped="yes" handler="avatar_file_remove_cb"/>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="icon_name">document-save-symbolic</property>
-                            <property name="icon_size">1</property>
-                          </object>
-                        </child>
+                      <object class="GtkImage">
+                        <property name="can_focus">False</property>
+                        <property name="icon_name">document-save-symbolic</property>
+                        <property name="icon_size">1</property>
                       </object>
                     </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkListBox" id="translation">
-                    <property name="visible">True</property>
-                    <property name="selection-mode">none</property>
                   </object>
                 </child>
               </object>
             </child>
           </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup" id="translation">
+              </object>
         </child>
       </object>
     </child>

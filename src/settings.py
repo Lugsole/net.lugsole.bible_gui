@@ -22,8 +22,7 @@ class BibleSettings(Adw.PreferencesWindow):
         super().__init__()
         self.App = App
         self.bible_file = ""
-        self.current_translation_row = None
-
+        self.translation_array = []
         try:
             settings = Gio.Settings.new(self.App.BASE_KEY)
             self.bible_file = settings.get_string("bible-translation")
@@ -43,21 +42,22 @@ class BibleSettings(Adw.PreferencesWindow):
         chooser = Gtk.FileChooserNative()
         chooser.set_transient_for(self)
         chooser.set_action(Gtk.FileChooserAction.OPEN)
-        '''
+
         filter = Gtk.FileFilter()
-        filter.set_name("Any Bible format")
+        filter.set_name("Supported Bible files")
         chooser.add_filter(filter)
         for parser in allParsers:
-            filter = Gtk.FileFilter()
-            filter.set_name(parser.getParserName(parser))
+            filter1 = Gtk.FileFilter()
+            filter1.set_name(parser.getParserName(parser))
             for ending in parser.getParserEndings(parser):
                 filter.add_pattern("*."+ ending)
-            chooser.add_filter(filter)
+                filter1.add_pattern("*."+ ending)
+            chooser.add_filter(filter1)
         filter = Gtk.FileFilter()
-        filter.set_name("Any File")
+        filter.set_name("All Files")
         filter.add_pattern("*")
         chooser.add_filter(filter)
-        '''
+
         chooser.connect('response', self.import_translation_load)
         chooser.show()
         self.chooser = chooser
@@ -73,8 +73,9 @@ class BibleSettings(Adw.PreferencesWindow):
             self.chooser.destroy()
 
     def translations_load(self):
-        while self.translation.get_row_at_index(0) is not None:
-            self.translation.remove(self.translation.get_row_at_index(0))
+        for item in self.translation_array:
+            self.translation.remove(item)
+        self.translation_array = []
         all_files = []
         base = user_data_dir
         for root, dirs, files in os.walk(base):
@@ -82,6 +83,14 @@ class BibleSettings(Adw.PreferencesWindow):
                 rel_path = os.path.join(root, filename)
                 all_files.append(rel_path)
         all_files.sort()
+
+        row = BibleTranslationRow("Default", self.translations_change, "", None)
+        if self.bible_file == "":
+            row.select()
+
+        def_check = row.get_check()
+        self.translation.add(row)
+        self.translation_array.append(row)
         for bible_file in all_files:
             try:
                 p = BibleParser(bible_file)
@@ -89,18 +98,16 @@ class BibleSettings(Adw.PreferencesWindow):
                     p.loadInfo()
 
                     row = BibleTranslationRow(
-                        p, self.translations_change, os.path.relpath(
-                            bible_file, base))
-                    if str(
-                            os.path.relpath(
-                                p.file_name,
-                                base)) == str(
-                            self.bible_file):
+                        p.bible.translationName,
+                        self.translations_change,
+                        os.path.relpath(bible_file, base),
+                        def_check)
+                    if str(os.path.relpath(p.file_name,base)) == str(self.bible_file):
                         row.select()
-                        self.current_translation_row = row
                     else:
                         row.deselect()
-                    self.translation.append(row)
+                    self.translation.add(row)
+                    self.translation_array.append(row)
             except Exception as error:
                 print(bible_file, "Must not be a bible file")
                 print(error)
@@ -110,41 +117,40 @@ class BibleSettings(Adw.PreferencesWindow):
             settings = Gio.Settings.new(self.App.BASE_KEY)
             settings.set_string("bible-translation", data)
             self.bible_file = settings.get_string("bible-translation")
-            if self.current_translation_row is not None:
-                self.current_translation_row.deselect()
-            button.select()
-            self.current_translation_row = button
         except Exception:
             print("gsettings error")
 
 
 class BibleTranslationRow(Adw.ActionRow):
-    def __init__(self, p, cb, rel_path):
+    def __init__(self, p, cb, rel_path, main_check):
         super().__init__()
 
         base = user_data_dir
         self.cb = cb
         self.rel_path = rel_path
-        self.set_property("title", str(p.bible.translationName))
-        self.button = Gtk.Button(label="Change")
-        self.button.connect('clicked', self.callback, rel_path)
+        self.set_property("title", str(p))
+        self.button = Gtk.CheckButton()
+        self.button.add_css_class("selection-mode")
+        self.button.connect('toggled', self.callback, rel_path)
         self.button.show()
-        self.checkmark = Gtk.Image.new_from_icon_name("emblem-ok-symbolic")
+        self.button.set_valign(Gtk.Align.CENTER)
+        if main_check is not None:
+            self.button.set_group(main_check)
 
         self.set_activatable_widget(self.button)
         self.box = Gtk.Box()
         self.box.append(self.button)
-        self.box.append(self.checkmark)
         self.add_suffix(self.box)
         self.show()
 
     def deselect(self):
-        self.button.show()
-        self.checkmark.hide()
+        self.button.set_active(False)
 
     def select(self):
-        self.button.hide()
-        self.checkmark.show()
+        self.button.set_active(True)
 
     def callback(self, button, data):
-        self.cb(self, self.rel_path)
+        if button.get_active():
+            self.cb(self, self.rel_path)
+    def get_check(self):
+        return self.button

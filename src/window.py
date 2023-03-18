@@ -216,7 +216,10 @@ class BibleWindow(Adw.ApplicationWindow):
 
     def on_bible_translation_changed(self, settings, key):
         base_file = settings.get_string("bible-translation")
-        self.p = BibleParser(os.path.join(user_data_dir, base_file))
+        if base_file == "":
+            self.p = BibleParser(os.path.join(pkgdatadir, "kjv.tsv"))
+        else:
+            self.p = BibleParser(os.path.join(user_data_dir, base_file))
         self.p.loadAll()
         self.origionalBible = self.p.bible
         self.Bible = self.origionalBible

@@ -2,13 +2,14 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
-from .config import user_data_dir
+from .config import user_data_dir, default_translation
 import shutil
 import os
 from gi.repository import Adw
 from gi.repository import GObject, GLib, Gtk, Gio
 
 from .Bible_Parser import BibleParser, allParsers
+from .path_order import find_file_on_path, walk_files_on_path
 Adw.init()
 
 
@@ -84,14 +85,16 @@ class BibleSettings(Adw.PreferencesWindow):
                 all_files.append(rel_path)
         all_files.sort()
 
-        row = BibleTranslationRow("Default", self.translations_change, "", None)
-        if self.bible_file == "":
-            row.select()
+        def_check = Gtk.CheckButton()
 
-        def_check = row.get_check()
-        self.translation.add(row)
-        self.translation_array.append(row)
-        for bible_file in all_files:
+        files = walk_files_on_path()
+        rel_files = list(files.keys())
+        rel_files.sort()
+        for k in rel_files:
+            #print(k)
+            bible_file = os.path.join(files[k], k)
+            path_file_name = k
+            #print("")
             try:
                 p = BibleParser(bible_file)
                 if p is not None:
@@ -100,9 +103,9 @@ class BibleSettings(Adw.PreferencesWindow):
                     row = BibleTranslationRow(
                         p.bible.translationName,
                         self.translations_change,
-                        os.path.relpath(bible_file, base),
+                        path_file_name,
                         def_check)
-                    if str(os.path.relpath(p.file_name,base)) == str(self.bible_file):
+                    if str(path_file_name) == str(self.bible_file) or (self.bible_file == "" and path_file_name == default_translation):
                         row.select()
                     else:
                         row.deselect()
@@ -114,6 +117,7 @@ class BibleSettings(Adw.PreferencesWindow):
 
     def translations_change(self, button, data):
         try:
+            #print("data", data)
             settings = Gio.Settings.new(self.App.BASE_KEY)
             settings.set_string("bible-translation", data)
             self.bible_file = settings.get_string("bible-translation")
@@ -138,8 +142,17 @@ class BibleTranslationRow(Adw.ActionRow):
             self.button.set_group(main_check)
 
         self.set_activatable_widget(self.button)
+
         self.box = Gtk.Box()
         self.box.append(self.button)
+        #if True:
+        #    self.sys = Gtk.Button()
+        #    self.sys.add_css_class("pill")
+        #    self.sys.add_css_class("small")
+        #    self.sys.add_css_class("raised")
+        #    self.sys.set_label("system")
+        #    self.sys.show()
+        #    self.box.append(self.sys)
         self.add_suffix(self.box)
         self.show()
 

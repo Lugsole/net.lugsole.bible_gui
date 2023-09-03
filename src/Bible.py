@@ -44,7 +44,7 @@ class Bible:
                 return book.getChapterNames()
         return []
 
-    def getBookName(self, num):
+    def getBookByNum(self, num):
         for book in self.books:
             if book.number == num:
                 return book
@@ -169,6 +169,11 @@ class Book:
             if chapter.number == thereChapters:
                 return chapter.verses
 
+    def getChapter(self, thereChapters):
+        for chapter in self.chapters:
+            if chapter.number == thereChapters:
+                return chapter
+
     def sort(self):
         self.chapters.sort(key=lambda x: x.number)
         for chapter in self.chapters:
@@ -188,6 +193,11 @@ class Book:
             return True, previous_chapter
         return False, None
 
+def sort_verse(item):
+    if type(item) == Verse:
+        return item.verse * 2
+    elif type(item) == Story:
+        return item.verse * 2 - 1
 
 class Chapter:
     def __init__(self, number=-1):
@@ -224,7 +234,7 @@ class Chapter:
         return copy
 
     def sort(self):
-        self.verses.sort(key=lambda x: x.verse)
+        self.verses.sort(key=sort_verse)
 
 
 class Verse:
@@ -242,6 +252,22 @@ class Verse:
         return "Verse(" + str(self.bookNumber) + ", " + str(self.chapter) + \
             ", " + str(self.verse) + ", " + self.text + ")"
 
+
+class Story:
+    def __init__(self, bookNumber, chapter, verse, order, text):
+
+        self.bookNumber = bookNumber
+        self.chapter = chapter
+        self.verse = verse
+        self.text = text
+        self.order = order
+
+    def getText(self):
+        return self.text
+
+    def __str__(self):
+        return "Story(" + str(self.bookNumber) + ", " + str(self.chapter) + \
+            ", " + str(self.verse) + ", " + str(self.order) + ", " + self.text + ")"
 
 class bibleSearchResults:
     def __init__(self):

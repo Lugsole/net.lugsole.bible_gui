@@ -1,4 +1,4 @@
-from .Bible import Book, Verse
+from .Bible import Book, Verse, Story
 import sqlite3
 import re
 from .Bible_Parser_Base import BibleParserBase
@@ -36,7 +36,7 @@ class BibleParserSqLit3(BibleParserBase):
         for row in c.execute(
                 'SELECT long_name,book_number,short_name FROM books'):
             self.bible.append(
-                Book(row[0], number=int(row[1]), shortName=row[2]))
+                Book(row[0].strip(), number=int(row[1]), shortName=row[2]))
 
         conn.close()
 
@@ -47,11 +47,25 @@ class BibleParserSqLit3(BibleParserBase):
         for row in c.execute(
                 'SELECT book_number, chapter, verse, text FROM verses'):
             verseText = row[3].rstrip()
-            verseText = re.sub(
-                r"\<(?<=\<)(.*?)(?=\>)\>",
-                "",
-                verseText
-            )
+            verseText = verseText.replace('¶','')
             self.bible.addVerse(
                 Verse(int(row[0]), int(row[1]), int(row[2]), verseText))
+        c = conn.cursor()
+
+        listOfTables = c.execute(
+          """SELECT name FROM sqlite_master WHERE type='table'
+          AND name='stories'; """).fetchall()
+
+        if listOfTables != []:
+            print('stories table found!')
+            c = conn.cursor()
+            for row in c.execute(
+                    'select book_number, chapter, verse, order_if_several, title from stories'):
+                verseText = row[4].rstrip()
+
+                s = Story(int(row[0]), int(row[1]), int(row[2]), int(row[3]), verseText)
+                self.bible.addVerse(s)
+        else:
+            print('stories table NOT found!')
+
         conn.close()

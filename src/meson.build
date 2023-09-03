@@ -17,10 +17,11 @@ conf.set('VERSION', meson.project_version() + version_suffix)
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
 conf.set('APPLICATION_ID', application_id)
+conf.set('translationdir', translationdir)
 
 configure_file(
   input: 'bible.in',
-  output: 'bible'+file_name_suffix,
+  output: 'net.lugsole.bible_gui'+profile,
   configuration: conf,
   install: true,
   install_dir: get_option('bindir')
@@ -47,7 +48,9 @@ bible_sources = [
   'Bible.py',
   'Audio_Player.py',
   'Bible_Parser_tsv.py',
-  'settings.py'
+  'settings.py',
+  'mybible_to_markdown.py',
+  'path_order.py',
 ]
 
 libhandy_dep = dependency('libadwaita-1',

@@ -18,6 +18,7 @@ class BibleParserTSV(BibleParserBase):
             while i < len(lines):
                 i += self.prosessVerseData(lines, i)
         self.bible.translationAbbreviation = os.path.basename(self.file_name)
+        self.bible.translationName = os.path.basename(self.file_name)[:-4]
 
     def loadAll(self):
 

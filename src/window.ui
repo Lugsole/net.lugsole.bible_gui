@@ -175,41 +175,18 @@
                       <object class="GtkViewport" id="viewport">
                         <property name="can-focus">False</property>
                         <child>
-                          <!-- n-columns=3 n-rows=3 -->
-                          <object class="GtkGrid" id="myTable">
-                            <property name="can-focus">False</property>
-                            <property name="halign">start</property>
-                            <property name="valign">start</property>
-                            <property name="column-spacing">3</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
+                          <object class="GtkTextView" id="bible_text">
+                            <property name="wrap-mode">GTK_WRAP_WORD_CHAR</property>
+                            <property name="editable">false</property>
+                            <property name="margin-end">5</property>
+                            <property name="margin-bottom">5</property>
+                            <property name="margin-start">5</property>
+                            <property name="margin-top">5</property>
                           </object>
                         </child>
+                        <style>
+                          <class name="view"/>
+                        </style>
                       </object>
                     </child>
                   </object>

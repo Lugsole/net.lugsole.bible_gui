@@ -7,3 +7,5 @@ import os
 from gi.repository import GLib
 user_data_dir = os.path.join(GLib.get_user_data_dir(), application_id, "translations")
 
+translationdir = '@translationdir@'
+default_translation = 'kjv.tsv'

@@ -22,6 +22,7 @@ class BibleParserSPB(BibleParserBase):
             i = 0
             while i < len(lines) and not lines[i].startswith("--"):
                 i += self.prosessData(lines, i)
+        self.bible.translationName = os.path.basename(self.file_name)
 
     def loadAll(self):
 

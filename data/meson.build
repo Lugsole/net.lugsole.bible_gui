@@ -7,6 +7,7 @@ conf.set('APPLICATION_ID', application_id)
 conf.set('application_path', application_path)
 conf.set('file_name_suffix', file_name_suffix)
 conf.set('application_name_suffix', application_name_suffix)
+conf.set('PROFILE', profile)
 
 desktop_file = i18n.merge_file(
   input: configure_file(
@@ -57,9 +58,9 @@ install_data(schema_src,
   install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'glib-2.0/schemas')
 )
 
-pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), application_id)
+
 install_data('kjv.tsv',
-  install_dir: pkgdatadir
+  install_dir: translationdir
 )
 
 

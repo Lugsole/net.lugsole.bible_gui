@@ -52,6 +52,7 @@ usable_tags = {
     't':tag_renderer('t', '<i>', '</i>\r'),
     'J':tag_renderer('J',  '<span foreground="red">', '</span>'),
     'n':tag_renderer_clear('n',  '', ''),
+    'T':tag_renderer_clear('T',  '<span size="150%"><b>', '</b></span>'),
     'i':tag_renderer('i',  '<i>', '</i>'),
     'e':tag_renderer('e',  '<b>', '</b>'),
     'sup':tag_renderer('sup',  '<span rise="4000" size="75%">', '</span> '),

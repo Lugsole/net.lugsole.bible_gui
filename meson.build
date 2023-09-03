@@ -34,6 +34,7 @@ application_name_suffix = name_suffix
 application_id = 'net.lugsole.bible_gui@0@'.format(profile)
 application_path = '/net/lugsole/bible_gui@0@'.format(path_suffix)
 
+translationdir = join_paths(get_option('prefix'), get_option('datadir'), application_id, 'translations')
 
 subdir('data')
 subdir('src')

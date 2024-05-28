@@ -1,15 +1,15 @@
+from .path_order import find_file_on_path, walk_files_on_path
+from .Bible_Parser import BibleParser, allParsers
+from gi.repository import GObject, GLib, Gtk, Gio
+from gi.repository import Adw
+import os
+import shutil
+from .config import user_data_dir, default_translation
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
-from .config import user_data_dir, default_translation
-import shutil
-import os
-from gi.repository import Adw
-from gi.repository import GObject, GLib, Gtk, Gio
 
-from .Bible_Parser import BibleParser, allParsers
-from .path_order import find_file_on_path, walk_files_on_path
 Adw.init()
 
 
@@ -51,8 +51,8 @@ class BibleSettings(Adw.PreferencesWindow):
             filter1 = Gtk.FileFilter()
             filter1.set_name(parser.getParserName(parser))
             for ending in parser.getParserEndings(parser):
-                filter.add_pattern("*."+ ending)
-                filter1.add_pattern("*."+ ending)
+                filter.add_pattern("*." + ending)
+                filter1.add_pattern("*." + ending)
             chooser.add_filter(filter1)
         filter = Gtk.FileFilter()
         filter.set_name("All Files")
@@ -88,13 +88,12 @@ class BibleSettings(Adw.PreferencesWindow):
         def_check = Gtk.CheckButton()
 
         files = walk_files_on_path()
-        rel_files = list(files.keys())
-        rel_files.sort()
+        rel_files = sorted(files.keys())
         for k in rel_files:
-            #print(k)
+            # print(k)
             bible_file = os.path.join(files[k], k)
             path_file_name = k
-            #print("")
+            # print("")
             try:
                 p = BibleParser(bible_file)
                 if p is not None:
@@ -105,7 +104,8 @@ class BibleSettings(Adw.PreferencesWindow):
                         self.translations_change,
                         path_file_name,
                         def_check)
-                    if str(path_file_name) == str(self.bible_file) or (self.bible_file == "" and path_file_name == default_translation):
+                    if str(path_file_name) == str(self.bible_file) or (
+                            self.bible_file == "" and path_file_name == default_translation):
                         row.select()
                     else:
                         row.deselect()
@@ -145,7 +145,7 @@ class BibleTranslationRow(Adw.ActionRow):
 
         self.box = Gtk.Box()
         self.box.append(self.button)
-        #if True:
+        # if True:
         #    self.sys = Gtk.Button()
         #    self.sys.add_css_class("pill")
         #    self.sys.add_css_class("small")
@@ -165,5 +165,6 @@ class BibleTranslationRow(Adw.ActionRow):
     def callback(self, button, data):
         if button.get_active():
             self.cb(self, self.rel_path)
+
     def get_check(self):
         return self.button

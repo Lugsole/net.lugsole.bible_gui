@@ -50,7 +50,9 @@ bible_sources = [
   'Bible_Parser_tsv.py',
   'settings.py',
   'mybible_to_markdown.py',
+  'mybible_to_markdown_new.py',
   'path_order.py',
+  'text_rendering.py',
 ]
 
 libhandy_dep = dependency('libadwaita-1',

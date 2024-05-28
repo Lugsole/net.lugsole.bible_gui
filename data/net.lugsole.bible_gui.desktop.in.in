@@ -5,6 +5,6 @@ Exec=net.lugsole.bible_gui@PROFILE@ %U
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/bible;
-Categories=GTK;
+Categories=Education
 StartupNotify=true
 X-Purism-FormFactor=Workstation;Mobile;

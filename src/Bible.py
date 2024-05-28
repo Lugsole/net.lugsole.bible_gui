@@ -6,6 +6,7 @@ class Bible:
         self.translationInformation = ""
         self.books = []
         self.language = ""
+        self.right_to_left = False
 
     def __str__(self):
         ret = ""
@@ -112,6 +113,23 @@ class Bible:
             return False, None, None
         return False, None, None
 
+    def getNextChapterByNum(self, book_number, chapter_number):
+        book = self.getBookByNum(book_number)
+        if book is None:
+            return False, None, None
+        chapter = book.getChapter(chapter_number)
+        if chapter is None:
+            return False, None, None
+        return self.next(book,chapter)
+
+    def getPreviousChapterByNum(self, book_number, chapter_number):
+        book = self.getBookByNum(book_number)
+        if book is None:
+            return False, None, None
+        chapter = book.getChapter(chapter_number)
+        if chapter is None:
+            return False, None, None
+        return self.previous(book,chapter)
 
 class Book:
     def __init__(self, name, number=-1, shortName=""):
@@ -193,11 +211,13 @@ class Book:
             return True, previous_chapter
         return False, None
 
+
 def sort_verse(item):
-    if type(item) == Verse:
+    if isinstance(item, Verse):
         return item.verse * 2
-    elif type(item) == Story:
+    elif isinstance(item, Story):
         return item.verse * 2 - 1
+
 
 class Chapter:
     def __init__(self, number=-1):
@@ -268,6 +288,7 @@ class Story:
     def __str__(self):
         return "Story(" + str(self.bookNumber) + ", " + str(self.chapter) + \
             ", " + str(self.verse) + ", " + str(self.order) + ", " + self.text + ")"
+
 
 class bibleSearchResults:
     def __init__(self):

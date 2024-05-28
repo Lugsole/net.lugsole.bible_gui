@@ -3,5 +3,6 @@
   <gresource prefix="/net/lugsole/bible_gui">
     <file>window.ui</file>
     <file>settings.ui</file>
+    <file>text_rendering.ui</file>
   </gresource>
 </gresources>

@@ -1,7 +1,7 @@
 {
     "app-id" : "net.lugsole.bible_gui.Devel",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "44",
+    "runtime-version" : "46",
     "sdk" : "org.gnome.Sdk",
     "command" : "net.lugsole.bible_gui.Devel",
     "finish-args" : [
@@ -10,7 +10,8 @@
         "--socket=fallback-x11",
         "--socket=wayland",
         "--socket=pulseaudio",
-        "--own-name=org.mpris.MediaPlayer2.Bible"
+        "--own-name=org.mpris.MediaPlayer2.Bible",
+        "--env=LC_ALL=he_IL.UTF-8"
     ],
     "cleanup" : [
         "/include",
@@ -32,47 +33,6 @@
                     "type" : "git",
                     "url" : "https://github.com/espeak-ng/espeak-ng",
                     "commit" : "a25849e4d54a23ae1294b129d5696ca7e144ec8b"
-                }
-            ]
-        },
-        {
-            "name" : "extra-bible-files",
-            "buildsystem": "simple",
-            "build-commands": ["install -D GB.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/GB.SQLite3",
-            			"install -D RVR09.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/RVR09.SQLite3",
-            			"install -D V.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/V.SQLite3",
-            			"install -D KRV.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/KRV.SQLite3",
-            			"install -D CTB.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/CTB.SQLite3",
-            			"install -D CUV+.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/CUV+.SQLite3",
-            			"install -D RST+.SQLite3 /app/share/net.lugsole.bible_gui.Devel/translations/RST+.SQLite3"],
-            "sources" : [
-                {
-                    "type" : "file",
-                    "path" : "GB.SQLite3"
-                },
-                {
-                    "type" : "file",
-                    "path" : "RVR09.SQLite3"
-                },
-                {
-                    "type" : "file",
-                    "path" : "V.SQLite3"
-                },
-                {
-                    "type" : "file",
-                    "path" : "KRV.SQLite3"
-                },
-                {
-                    "type" : "file",
-                    "path" : "CTB.SQLite3"
-                },
-                {
-                    "type" : "file",
-                    "path" : "CUV+.SQLite3"
-                },
-                {
-                    "type" : "file",
-                    "path" : "RST+.SQLite3"
                 }
             ]
         },

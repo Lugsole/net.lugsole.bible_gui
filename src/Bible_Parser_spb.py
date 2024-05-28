@@ -1,6 +1,6 @@
 from .Bible import Book, Verse
 from .Bible_Parser_Base import BibleParserBase
-
+import os
 
 class BibleParserSPB(BibleParserBase):
     name = "spb"
@@ -13,6 +13,7 @@ class BibleParserSPB(BibleParserBase):
         BibleParserBase.__init__(self, file_name)
 
     def loadInfo(self):
+        self.bible.translationName = os.path.basename(self.file_name)
         with open(self.file_name) as myFile:
             lines = []
             for line in myFile:
@@ -22,7 +23,6 @@ class BibleParserSPB(BibleParserBase):
             i = 0
             while i < len(lines) and not lines[i].startswith("--"):
                 i += self.prosessData(lines, i)
-        self.bible.translationName = os.path.basename(self.file_name)
 
     def loadAll(self):
 

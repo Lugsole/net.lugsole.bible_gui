@@ -9,7 +9,7 @@
     <child>
       <object class="AdwPreferencesPage">
         <property name="icon_name">edit-select-all-symbolic</property>
-        <property name="title">Only Page</property>
+        <property name="title" translatable="yes">Only Page</property>
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Translation</property>

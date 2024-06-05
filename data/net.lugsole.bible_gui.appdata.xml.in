@@ -31,14 +31,24 @@
     <control>pointing</control>
     <control>touch</control>
   </recommends>
-
+  <keywords>
+      <keyword translate="no">Bible</keyword>
+      <keyword translate="no">Bibles</keyword>
+      <keyword translate="no">Linux</keyword>
+      <keyword translate="no">Book</keyword>
+  </keywords>
   <launchable type="desktop-id">net.lugsole.bible_gui.desktop</launchable>
   <requires>
     <display_length compare="ge">360</display_length>
   </requires>
-
+  <branding>
+      <color type="primary" scheme_preference="light">#ff3751</color>
+      <color type="primary" scheme_preference="dark">#8f0013</color>
+  </branding>
   <url type="homepage">https://lugsole.net</url>
-  <developer_name>Lugsole</developer_name>
+  <developer id="net.lugsole.bible_gui">
+      <name>Lugsole</name>
+  </developer>
   <releases>
     <release version="0.1.4" date="2024-05-28">
       <description>

@@ -42,8 +42,8 @@
     <display_length compare="ge">360</display_length>
   </requires>
   <branding>
-      <color type="primary" scheme_preference="light">#ff3751</color>
-      <color type="primary" scheme_preference="dark">#8f0013</color>
+      <color type="primary" scheme_preference="light">#799dff</color>
+      <color type="primary" scheme_preference="dark">#1757e2</color>
   </branding>
   <url type="homepage">https://lugsole.net</url>
   <developer id="net.lugsole.bible_gui">

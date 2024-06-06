@@ -32,10 +32,10 @@
     <control>touch</control>
   </recommends>
   <keywords>
-      <keyword translate="no">Bible</keyword>
-      <keyword translate="no">Bibles</keyword>
-      <keyword translate="no">Linux</keyword>
-      <keyword translate="no">Book</keyword>
+      <keyword>Bible</keyword>
+      <keyword>Bibles</keyword>
+      <keyword>Linux</keyword>
+      <keyword>Book</keyword>
   </keywords>
   <launchable type="desktop-id">net.lugsole.bible_gui.desktop</launchable>
   <requires>

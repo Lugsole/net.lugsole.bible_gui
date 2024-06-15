@@ -181,7 +181,7 @@ class root:
         return ret
 
     def remove_pre(self):
-        while self.children[0].is_whitespace():
+        while len(self.children) > 0 and self.children[0].is_whitespace():
             del self.children[0]
 
     def insert_number(self, verse_number):

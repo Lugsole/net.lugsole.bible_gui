@@ -10,8 +10,7 @@
         "--socket=fallback-x11",
         "--socket=wayland",
         "--socket=pulseaudio",
-        "--own-name=org.mpris.MediaPlayer2.Bible",
-        "--env=LC_ALL=he_IL.UTF-8"
+        "--own-name=org.mpris.MediaPlayer2.Bible"
     ],
     "cleanup" : [
         "/include",

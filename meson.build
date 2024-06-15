@@ -1,5 +1,5 @@
 project('bible_gui',
-          version: '0.1.4',
+          version: '0.1.5',
     meson_version: '>= 0.50.0',
   default_options: [ 'warning_level=2',
                    ],

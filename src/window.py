@@ -196,6 +196,8 @@ class BibleWindow(Adw.ApplicationWindow):
 
         self.book = self.Bible.books[0]
         self.chapter = self.book.chapters[0]
+        self.tr.book = self.book.number
+        self.tr.chapter = self.chapter.number
         self.tr.setBible(self.Bible)
         self.tr.p = self.p
         self.tr.UpdateTable(self.chapter.verses, None, self.p)

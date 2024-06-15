@@ -76,7 +76,8 @@ class BibleSettings(Adw.NavigationPage):
                 break
         if title is None:
             book = self.Bible.getBookByNum(self.book)
-            title = book.bookName.removesuffix('\u200e') + ' ' + str(self.chapter)
+            if book is not  None:
+                title = book.bookName.removesuffix('\u200e') + ' ' + str(self.chapter)
 
         text = Gtk.Label()
         if self.Bible.right_to_left:

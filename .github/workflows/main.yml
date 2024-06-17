@@ -23,7 +23,7 @@ jobs:
         if: matrix.settings.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential espeak appstream-util libadwaita-1-0 meson ninja-build gettext
+          sudo apt-get install -y build-essential espeak appstream-util libadwaita-1-0 meson ninja-build gettext libadwaita-1-dev
         # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
         # Moves Cargo.toml to src-tauri

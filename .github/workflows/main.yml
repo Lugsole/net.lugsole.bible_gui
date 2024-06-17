@@ -33,7 +33,9 @@ jobs:
           cd build
       - name: Build
         run: |
+          cd build
           ninja -j4
       - name: Install
         run: |
+          cd build
           ninja -j4 install

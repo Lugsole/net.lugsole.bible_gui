@@ -5,7 +5,7 @@ on:
   push:
   pull_request:
 jobs:
-  Publish-Tauri:
+  Test:
     permissions:
       contents: write
     strategy:
@@ -35,7 +35,3 @@ jobs:
         run: |
           cd build
           ninja -j4
-      - name: Install
-        run: |
-          cd build
-          sudo ninja -j4 install

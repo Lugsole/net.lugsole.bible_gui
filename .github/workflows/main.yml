@@ -1,0 +1,37 @@
+name: 'Test'
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+jobs:
+  Test:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: ''
+
+    runs-on: ${{ matrix.settings.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.settings.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential espeak appstream-util libadwaita-1-0 meson ninja-build gettext libadwaita-1-dev
+        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
+        # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
+        # Moves Cargo.toml to src-tauri
+      - name: Setup
+        run: |
+          meson setup build
+          cd build
+      - name: Build
+        run: |
+          cd build
+          ninja -j4
